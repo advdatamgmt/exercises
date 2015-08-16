@@ -1,0 +1,11 @@
+---
+params:
+  key: TRUE
+output_dir: html
+---
+
+```{r, include=FALSE}
+library(knitr)
+opts_template$set(hideall = list(include=ifelse(params$key,TRUE,FALSE)))
+opts_template$set(hideans = list(results=ifelse(params$key,'show','hide')))
+```

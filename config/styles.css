@@ -1,0 +1,19 @@
+h1 {
+  color: navy;
+}
+
+h3 {
+  color: dimgray;
+  font-style: italic;
+}
+
+table.exercise {
+  border: solid;
+  margin: auto;
+}
+
+table.exercise td, table.exercise th {
+  border: solid;
+  padding: 10px;
+  text-align: center;
+}

@@ -1,0 +1,17 @@
+---
+title: "R Exercise Index"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+1. [Rithmatic](rithmatic.html)
+1. [Atomic Data Types](atomic.html)
+1. [Rcel, part 1](rcel1.html)
+1. [Functions, part 1](functions1.html)

@@ -1,0 +1,131 @@
+---
+title: "‘Rithmatic"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+One of the best ways to start learning to use the R console is as a calculator.  Try typing the following at the R console and verify that you get the same answers:
+
+### Addition
+```{r}
+2 + 2  # This should equal 4
+```
+
+> Did you notice my use of the `#` to add some commentary to my code?  The `#` character, called a **hash** or **pound** character tells
+> R to ignore the rest of the line because it was written for humans.  They are also used when displaying the output in our exercises so 
+> that you could easily cut and paste a section of several continous statements without causing a problem with the output.  As you can
+> see in the output we use two `#` but this is not requried as R would ignore anything after the first one.
+
+```{r}
+3 + 4 + 6
+```
+
+### Subtraction
+```{r}
+20 - 4.2
+```
+
+```{r}
+100 - 20 - 5
+```
+
+### Multiplication
+```{r}
+2 * 2
+```
+
+```{r}
+5 * 4 * 3 * 2 * 1
+```
+
+### Division
+```{r}
+25 / 5
+```
+
+```{r}
+3 / 5
+```
+
+
+Explore and Extend
+------------------
+
++ What do you get when you divide by zero?
+
++ What does the operator `%%` do?  Don't look it up - try to figure it out by experimenting with different inputs.  Here is one example of the type of things you should try:
+```{r, eval=FALSE}
+12 %% 5
+```
+
++ Try to think of a situation where the operator `%%` might be useful for some procedure or process?
+
++ You can use parentheses to group operations when necessary, e.g. `(3 * 4) + (5 * 6)`.  In the absence of parentheses, most computer languages, including R, use a set of rules called **presidence** <a name="presidence"/> to determine which operation to do first.  Although you might think left-to-right would be the rule, this is the rule only when two operators have equal **presidence**.  Instead, certain operators take **presidence** over other operators and those with a higher **presidence** are executed first.  Try some expressions like those below and figure out the presidence of the four main mathematical operators we learned about `+`, `-`, `*`, `/`.  
+    + Which have equal presidence (i.e., are evaluated left-to-right)?  
+    + Which have higher presidence than the others?
+```{r, eval=FALSE}
+2 + 3 * 4
+3 / 2 * 5
+```
+
+
+Evaluate
+--------
+
+Complete the following exercises in R and turn in your code (in an .R file named rithmatic_<yourlastname>.R) and answers (as comments within your .R file), e.g.,
+
+```{r, eval=FALSE}
+# Question 1
+3 + 4 + 5
+# Answer: 12
+
+# Question 2
+...
+```
+
+In a couple of weeks we will learn a better way to combine code and the answers, but for now we will rely on this method.
+
+1. What is the result of `(2.12 + 4.2) * 1.001 / 2`?
+```{r, opts.label='hideall'}
+(2.12 + 4.2) * 1.001 / 2
+```
+
+2. What does the `^` operator do?  Try to figure it out without looking it up.  Give an example and describe in terms of another operator you have already learned.
+```{r, opts.label='hideall'}
+2 ^ 3
+# ^ is the exponentiation operator; it multiplies (*) the first number by 
+# itself the number oftimes given by the secord number
+# so 2 ^ 3 is 2 raised to the third power or 2 * 2 * 2
+```
+
+3. What is the remainder of 6656127240 when divided by 9?
+```{r, opts.label='hideall'}
+6656127240 %% 9
+```
+
+4. What does the `%/%` operator do?  Again, try to figure it out without looking it up.  Only use whole numbers.  Which operator that you have learned about is this operator the complement to?
+```{r, opts.label='hideall'}
+# It is an operator for interger division.  It gives the number of times another number
+# divides into another ignoring the remainder.  It is the complement to the modulo operator, %%.
+6656127240 %/% 9
+9 %/% 2
+```
+
+5. What does R say the answer to zero divided by zero is?
+```{r, opts.label='hideall'}
+0/0
+```
+

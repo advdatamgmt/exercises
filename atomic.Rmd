@@ -1,0 +1,147 @@
+---
+title: "Atomic Data Types"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+In this exercise we will explore three important **atomic** data types: `numeric`, `character`, and `logical`.
+
+### Numeric
+You have already met `numeric` in the [Rithmatic](rithmatic.html) exercise.  How do you know?  Just ask R:
+
+```{r}
+is.numeric(1)
+is.numeric(2+2)
+```
+
+Based on the name I'm sure you are not surprised that the `numeric` data type is used for numbers.
+
+### Character
+The `character` type is used to represent text, or what is more commonly called **strings** in computer lingo.  You know you have string if it is enclosed in quotes.  
+Those quotes can be either double (`"`) or single (`'`).  In this class we will favor the double quotes for consistency but there are instances (see below) where it is
+easiest to use the other type.
+
+```{r}
+"Hello, my name is R"
+"What is your name?"
+```
+
+```{r, eval=FALSE}
+is.character("Hi, _____")  # NOTE: _ is an underscore or underline character
+                           # it is usually above your hyphen (i.e., -)
+```
+
+```{r, echo=FALSE}
+is.character("Hi, _____") 
+```
+
+### Logical
+The `logical` type is used to simply represent `TRUE` or `FALSE`.  This is sort of R's way of saying "yes" or "no."  
+```{r}
+TRUE
+FALSE
+is.logical(TRUE)
+is.logical(2)
+```
+
+R allows you to use `T` for `TRUE` and `F` for `FALSE`, but please do *not* use that in this class.  It makes your code harder to read for others.  However, I want you to know in case you see someone else do it or if your instructor is being lazy one day at the console.  (However, your instructor always types it out completely in his production code.)
+
+```{r}
+T
+is.logical(F)
+```
+
+Explore and Extend
+------------------
+
++ Which of the **atomic** data types is the answer you get when you divide another number by zero?  Does that surprise you?
+
++ What does `is.character(2)` evaluate to?  How can you still use `is.character` and `2` get `TRUE` instead?
+
++ What happens when you type `"John said, "How are you today?""` in the R console?  Think about this.  Why do you think this happens?  Propose a solution.
+
++ Useful **operators** for the `logical` data type include `&`, `|`, and `!`.  They are called the **logical operators**.  The `|` is often called a **pipe** character.  You'll usually find it above the backslash
+(i.e., \) on your keyboard.  Make a table for all possible values of `TRUE` and `FALSE`.  (Hint: only two for `!`, but four possibilities for `&` and `|`.)  What would you
+propose as names for these?
+
+```{r}
+!TRUE
+TRUE & FALSE
+```
+
+> The `!` operator is different from the others you have seen so far in that it only takes one input, or **argument**, whereas the others take
+> two.  One argument **operators** are called **unitary** while those that take two are called **binary**.  Those that take more than two are called **multiary** or 
+> **multary**.  So `!` is **unitary** while `+`, `&`, and all the others you have learned are **binary**.  We have not yet met any **multiary** operators: `2 + 2 + 3` is
+> just using a **binary** operator twice.
+
++ Another group of useful **binary operators** for all the **atomic** data types are the six **relational operators**: `<`, `>`, `<=`, `>=`, `==`, and `!=`.  Write
+an expression using each **atomic** data type and each **relational operator** in the following table that I started for you:
+
+<table class="exercise">
+<tr><th>Data type: </th><td colspan="2">`numeric`</td><td colspan="2">`character`</td><td colspan="2">`logical`</td></tr>
+<tr><th>Evaluates to:</th><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td></tr>
+<tr><th>`<`</th><td>`3 < 2`</td><td>`2 > 3`</td><td>`"a" < "b"`</td><td>`"b" < "a"`</td><td>`FALSE < TRUE`</td><td>`TRUE < FALSE`</td><tr>
+<tr><th>`>`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><th>`<=`</th><td>`3 <= 3`</td><td>`2 <= 2`</td><td></td><td></td><td></td><td></td></tr>
+<tr><th>`>=`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><th>`==`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><th>`!=`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+
+Evaluate
+--------
+Complete the following exercises in R and turn in your code in an .R file.  Like before, name your code file atomic_<yourlastname>.R and if some 
+part of the response is not an executable by R without an error use a comment.
+
++ How many **arguments** does a **binary operator** take?  Give an example.
+
++ Fix the following code so it does not generate an error.  Why does R generate an error?
+```{r, eval=FALSE}
+True
+```
+
+```{r, opts.label='hideall', eval=FALSE}
+TRUE
+```
+
++ Without running it in R, what should R say when you run the following code?  Once you feel confident, check it in R.  Turn in the answer.
+```{r, opts.label='hideans'}
+(2 + 2 == 4) | (3 + 3 == 4)
+```
+
++ Fix the following code so it does not generate an error (notice the code highlighting/coloration trying to help you out?):
+```{r, eval=FALSE}
+is.character('I'm fine')
+```
+
+```{r, opts.label='hideall'}
+is.character("I'm fine")
+```
+
++ Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators**, **logical operators**, and **relational operators** by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
+```{r, eval=FALSE}
+# * /
+# + -
+```
+
+```{r, opts.label='hideall', eval=FALSE}
+# * / 
+# + -
+# < > <= >= == !=
+# !
+# & |
+```

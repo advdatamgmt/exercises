@@ -1,0 +1,25 @@
+---
+title: "Simple Data Types"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+Explore and Extend
+------------------
+
+Evaluate
+--------
+
