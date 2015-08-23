@@ -19,7 +19,7 @@ Exercise
 --------
 
 Once you learn R well, you will likely find that you do not tend to use spreadsheets like Microsoft Excel as much for common tasks that you 
-might have previously done in such software.  We will see a spreadsheet-like structure develop as we work with the
+might have previously done in spreadsheet software.  We will see a spreadsheet-like structure develop as we work with the
 composite data types of `vector`, `factor`, `list`, and `data.frame`.  Type the following at the R console and 
 verify you get the same results, but also try to be sure you understand what is happening.  This first part will cover only
 `vector` and `factor`.
@@ -199,15 +199,18 @@ Evaluate
 --------
 You know the drill.  The stem of your R file should be `rcel1_`.
 
-Before continuing add the following to your R file and execute it.  It creates random `vectors` for use in these exercises that will be the same
-for everyone (more on this at a later date).
+Before continuing run the first two lines from your console, and add the third line to your R file.  It downloads and installs two packages and then loads the a package that gives you access to the data for this exercise.
+We will discuss all of this a lot more later.  For now, just do it mindlessly...
 
-```{r}
-set.seed(15437)
-x <- floor(runif(100)*100)
-y1 <- sample(c(TRUE,FALSE),10,replace=TRUE)
-y2 <- sample(c(TRUE,FALSE),10,replace=TRUE)
-z <- sample(c("a","b","c"),1000,replace=TRUE)
+```{r, echo=FALSE}
+rm(x)
+library(adm)
+```
+
+```{r, eval=FALSE}
+install.packages("devtools")                  # you only need to do this one time
+devtools::install_github("advdatamgmt/adm")   # this too, but I may update as course goes along
+library(adm)                                  # this you need every time you use the package 'adm'
 ```
 
 + Is `2dogs` a valid name in R?  Why or why not?
@@ -232,5 +235,5 @@ z[62]
 
 + How many letter c's are in `z`?
 ```{r, opts.label='hideall'}
-summary(factor(z))[3]   # did you know the oupput is a vector?
+summary(factor(z))[3]   # did you know the oupput is a vector? is.vector()?
 ```

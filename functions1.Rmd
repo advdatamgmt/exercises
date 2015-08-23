@@ -1,0 +1,39 @@
+---
+title: "Functions, part 1"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+### A note on naming
+Remember when we said that you can not use one of the **reserved** words for a **name**.  If not, go back to the [Rcel](rcel.html) exercise.  
+However, you also need to be careful with things like `c` that *not* reserved words when naming functions.  Try the following:
+
+Separate **namespaces** for functions and ... 
+
+```{r}
+c <- function() {}
+```
+
+```{r, error=TRUE}
+c(1,2,3)     # Uh oh.
+```
+
+Explore and Extend
+------------------
+
+Evaluate
+--------
+
