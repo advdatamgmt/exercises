@@ -82,7 +82,7 @@ img {
 
 <div id="exercise" class="section level2">
 <h2>Exercise</h2>
-<p>Once you learn R well, you will likely find that you do not tend to use spreadsheets like Microsoft Excel as much for common tasks that you might have previously done in such software. We will see a spreadsheet-like structure develop as we work with the composite data types of <code>vector</code>, <code>factor</code>, <code>list</code>, and <code>data.frame</code>. Type the following at the R console and verify you get the same results, but also try to be sure you understand what is happening. This first part will cover only <code>vector</code> and <code>factor</code>.</p>
+<p>Once you learn R well, you will likely find that you do not tend to use spreadsheets like Microsoft Excel as much for common tasks that you might have previously done in spreadsheet software. We will see a spreadsheet-like structure develop as we work with the composite data types of <code>vector</code>, <code>factor</code>, <code>list</code>, and <code>data.frame</code>. Type the following at the R console and verify you get the same results, but also try to be sure you understand what is happening. This first part will cover only <code>vector</code> and <code>factor</code>.</p>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
 <p>A <code>vector</code> is constructed using a function called simply <code>c</code>. Note that <code>c</code> is lower case which matters because R is a <em>case-sensitive</em> language. If you type a capital, or upper case, <code>C</code> instead of lower case <code>c</code> then R will <em>not</em> know what you mean.</p>
@@ -240,12 +240,10 @@ state</code></pre></div>
 <div id="evaluate" class="section level2">
 <h2>Evaluate</h2>
 <p>You know the drill. The stem of your R file should be <code>rcel1_</code>.</p>
-<p>Before continuing add the following to your R file and execute it. It creates random <code>vectors</code> for use in these exercises that will be the same for everyone (more on this at a later date).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">15437</span>)
-x &lt;-<span class="st"> </span><span class="kw">floor</span>(<span class="kw">runif</span>(<span class="dv">100</span>)*<span class="dv">100</span>)
-y1 &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>),<span class="dv">10</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>)
-y2 &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>),<span class="dv">10</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>)
-z &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>),<span class="dv">1000</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>Before continuing run the first two lines from your console, and add the third line to your R file. It downloads and installs two packages and then loads the a package that gives you access to the data for this exercise. We will discuss all of this a lot more later. For now, just do it mindlessly…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)                  <span class="co"># you only need to do this one time</span>
+devtools::<span class="kw">install_github</span>(<span class="st">&quot;advdatamgmt/adm&quot;</span>)   <span class="co"># this too, but I may update as course goes along</span>
+<span class="kw">library</span>(adm)                                  <span class="co"># this you need every time you use the package 'adm'</span></code></pre></div>
 <ul>
 <li><p>Is <code>2dogs</code> a valid name in R? Why or why not?</p></li>
 <li><p>What is the sum of the 11th and 82nd element of <code>x</code>?</p></li>
