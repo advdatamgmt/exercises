@@ -24,7 +24,7 @@ You have already met `numeric` in the [Rithmatic](rithmatic.html) exercise.  How
 
 ```{r}
 is.numeric(1)
-is.numeric(2+2)
+is.numeric(2 + 2)
 ```
 
 Based on the name I'm sure you are not surprised that the `numeric` data type is used for numbers.

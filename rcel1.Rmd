@@ -60,7 +60,7 @@ using the `<-` operator (that is made of two characters, the less than symbol, `
 the value on the right hand side of `<-` into the name on the left hand side.
 
 ```{r}
-x <- c(TRUE,TRUE,TRUE,FALSE,TRUE)  # nothing appears to happen, but everything is ok...
+x <- c(TRUE, TRUE, TRUE, FALSE, TRUE)  # nothing appears to happen, but everything is ok...
 x                                  # ...see? I told you so! :)
 is.logical(x)
 ```
@@ -80,7 +80,7 @@ When you **name** something the same thing, it is replaced:
     
 ```{r}
 x
-x <- c(1,2,3)
+x <- c(1, 2, 3)
 x
 ```
 
@@ -120,15 +120,15 @@ if you need to label a `numeric vector`.
 
 Note that the labels match the order of the values if you use numbers, not the order they appear in the `vector` you convert to a `factor`:
 ```{r}
-x <- c(2,3,1,1,1)
-state <- factor(x,labels=c('GA','FL','AL'))
+x <- c(2, 3, 1, 1, 1)
+state <- factor(x, labels = c('GA', 'FL', 'AL'))
 state
 summary(state)
 ```
 
 You can also use a character `vector` to create a `factor`:
 ```{r}
-state <- factor(c("GA","GA","FL","AL","GA"))
+state <- factor(c("GA", "GA", "FL", "AL", "GA"))
 state
 summary(state)  # notice it is the same data, but alphabetically sorted
 ```
@@ -142,7 +142,7 @@ x               # same x as above
 x[5]
 x[2]
 x[2] + x[5]
-x[c(2,5)]       # create a new vector with the second and fifth element of x
+x[c(2, 5)]       # create a new vector with the second and fifth element of x
 state[3]        # works with vectors too
 ```
 
@@ -160,18 +160,18 @@ x < 2
 You can also apply operators to two `vectors` of the same length in which case the resulting `vector` will be the result of the operator
 applied to the first element of each `vector`, then the second element of each `vector`, and so on:
 ```{r}
-x - c(1,0,1,0,1)
+x - c(1, 0, 1, 0, 1)
 ```
 
 You can even use a `vector` that is shorter than the other.  It will be recycled.
 ```{r}
-c(1,0,1,0,1,0) + c(0,1)
+c(1, 0, 1, 0, 1, 0) + c(0, 1)
 ```
 
 However, you will get a `warning` if the shorter `vector` is not a multiple of the longer `vector` because this usually unintentional and most
 often indicates a bug in your program.  Here it works the way we expect:
 ```{r}
-c(1,0,1,0,1) + c(0,1)
+c(1, 0, 1, 0, 1) + c(0, 1)
 ```
 
 A `warning` is issued by a program when it can continue executing, but is not sure that how it is going to continue to execute is 
@@ -191,8 +191,8 @@ Explore and Extend
 + Remember that I said that a vector can only be made from the same atomic type?  Try the following (and additional similar examples)
 and try to understand what is going on.  What is R doing?  Why does this always work?
 ```{r}
-c(TRUE,0,FALSE,3)
-c("a",3,TRUE)
+c(TRUE, 0, FALSE, 3)
+c("a", 3, TRUE)
 ```
 
 Evaluate

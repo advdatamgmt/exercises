@@ -14,4 +14,3 @@ params:
 1. [Rithmatic](rithmatic.html)
 1. [Atomic Data Types](atomic.html)
 1. [Rcel, part 1](rcel1.html)
-1. [Functions, part 1](functions1.html)
