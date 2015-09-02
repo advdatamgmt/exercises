@@ -1,0 +1,177 @@
+---
+title: "Rcel, part 2"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+In the [first part of this exercise](rcel1.html) we learned about `vector` and `factor` which are two 
+building blocks of a `data.frame`.  As you recall, a `vector` requires that each element be of the same
+**atomic** data type.  Now, we meet the first **composite** data type that can contain multiple **atomic** 
+types as elements simultaneously: `list`.  A specialized `list` called `data.frame` will be used to store our datasets and 
+will allow us to operate on our datasets as spreadsheet-like objects.
+
+## Lists
+A `list` allows you to mix 'n' match atomic data types.  You bulid a list with the function `list()`
+
+```{r}
+l <- list("A", 2, TRUE)
+is.character(l[[1]])  # see the subtle difference between l ("ell") and 1 ("one")?
+is.numeric(l[[2]])
+is.logical(l[[3]])
+is.list(l)
+```
+
+Did you notice the `[[]]` syntax used to index a `list`?  So, each element of a `list` does not have to be just a single atomic element, but can be a `vector`:
+
+```{r}
+l <- list("A", c(1,3,2,4), TRUE)
+l # notice the hist that R gives you about how to access a given elmeent
+l[[2]]
+```
+
+You can also name the elements, and using the `$` syntax you can access those elements using that name:
+
+```{r}
+l2 <- list(a = "A", b = c(1, 3, 2, 4), c = TRUE)
+l2 # again notice R's hints about accessing elements
+l2$c
+```
+
+## Extending assigment
+
+With a `vector` you can **reassign** a specific element like this:
+
+```{r}
+x <- c(1, 3, 2, 4)
+x[2] <- 2
+x
+```
+
+You can also assign to parts of a `list` using the list syntax (see Explore and Extend below).
+
+## Data frames
+
+A `data.frame` is a specialized `list` where all the elements of the `list` have equal length.  It is perfect for
+represening data where there are several values (in columns) per observation (in rows).  You create a `data.frame` with the `data.frame()` function:
+
+```{r}
+df <- data.frame(age = c(3, 2, 3, 3, 1, 2, 4, 4), 
+                 sex = factor(c("m", "f", "m", "f", "m", "f", "m", "f")), 
+                 sorethroat = factor(c("no", "no", "no", "no", "yes", "yes", "yes", "yes")))
+df
+df$sex
+summary(df)
+```
+
+In general, we will usually import a `data.frame` from an external file, like an Excel spreadsheet, but there are times when you want to build
+a `data.frame` from scratch, especially as you attempt to restructure data.
+
+You can check what variables are in a `data.frame` like this (it also works for `list`):
+
+```{r}
+names(df)
+```
+
+We can reference an exact row and column pair in a `data.frame` (rows first, columns second - this is the usual convention in mathematics and
+programming):
+
+```{r}
+df[2, 3]
+```
+
+If we leave out the row or column specification, we get the whole row or column:
+```{r}
+df[2, ] # entire second row
+df[, 3] # entire third column
+```
+
+You can use the name of the column too:
+```{r}
+df[2, "sorethroat"]  # same as df[2, 3]
+df[, "sorethroat"]   # same as df[, 3]
+```
+
+Finally, you can use the `subset` command to find rows that match certain criteria:
+```{r}
+subset(df, age == 2)
+subset(df, age == 2 & sorethroat == "yes")
+```
+
+This is a new `data.frame` that you can subset and operate upon:
+```{r}
+subset(df, sorethroat == "yes")$age
+median(subset(df, sorethroat == "yes")$age)
+```
+
+Explore and Extend
+------------------
+
++ Demostrate two ways to extract the numeric element `2` from the second element of `l2` above. (Hint: combine the
+syntax from this exercise with that of the last one.)
+
++ What data type is `l2[1]` vs. `l2[[1]]` vs. `l2$a`?  What happens when you do `l2[c(1,2)]` vs. `l2[[c(1,2)]]`?  (Notice the
+difference between this and how we reference rows and columns of a `data.frame`.) You know that you can extract
+elements from a `vector` using `[]` so now can you extract a numeric vector equivalent to `c(3,4)` from `l2` by generalizing the
+ideas from this question and the last one?
+
++ Demostrate two ways to reassign the second element of `l2` to a value of `900`. Notice the difference
+between `O` ("oh") and `0` ("zero").
+
++ Prove that a `data.frame` is a `list`.  Prove that an arbitrary `list` like `l2` is not a `data.frame` (guess what the function is to test if
+something is a `data.frame`).  
+
++ In `df`, replace the 5th observation's sex with `"f"`.  Now, try to replace the 5th observation's sore throat with `"maybe"`.  Can you make sense
+of the error message?  Can you create a solution such that at the end `df` still contains a factor called `sorethroat` with the help of the function `as.character`?  (By the way, there are `as.` versions of all the types we've studied.) It is used like this:
+
+```{r}
+as.character(df$sorethroat)
+```
+
+Evaluate
+--------
+
+R includes several datasets.  You can see what is included by running the `data()` command.  For this evaluation, we will use the `esoph` dataset.  You can
+load it like this `data(esoph)`.  After that, you can refer to it with just `esoph`.  If you are curious about the data, run `?esoph` which will pull up the help file for the data.  This file is in a case-control format where each row represents multiple cases and controls, in variables `ncases` and `ncontrols`.
+So, if you are asked how many observations there are you'd add the number of cases and controls.  Include the R code for each problem.  Do not do only by hand.
+
+1. Display a simple summary of `esoph`.
+```{r, opts.label='hideall'}
+summary(esoph)
+```
+
+2. Extract the 4th row of `esoph`.
+```{r, opts.label='hideall'}
+esoph[4,]
+```
+
+3. List the names of `esoph`.
+```{r, opts.label='hideall'}
+names(esoph)
+```
+
+4. What is the number of cases which have tobacco consumption (`tobgp`) of 30+ gm/day?  You'll find the command `sum()` helpful.  Use it like `median()` above. 
+
+```{r, opts.label='hideall'}
+sum(subset(esoph, tobgp == "30+")$ncases)
+```
+
+5. What is the number of *observations* where both the age group (`agegp`) is 25-34 years and tobacco consumption is 10-19 gm/day?
+```{r, opts.label='hideall'}
+sum(subset(esoph, agegp == "25-34" & tobgp == "10-19")[, c("ncases", "ncontrols")])
+
+# another way of many
+esoph.ss <- subset(esoph, agegp == "25-34" & tobgp == "10-19")
+sum(esoph.ss$ncases) + sum(esoph.ss$ncontrols)
+```

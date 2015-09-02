@@ -107,9 +107,9 @@ Evaluate
 Complete the following exercises in R and turn in your code in an .R file.  Like before, name your code file atomic_<yourlastname>.R and if some 
 part of the response is not an executable by R without an error use a comment.
 
-+ How many **arguments** does a **binary operator** take?  Give an example.
+1. How many **arguments** does a **binary operator** take?  Give an example.
 
-+ Fix the following code so it does not generate an error.  Why does R generate an error?
+2. Fix the following code so it does not generate an error.  Why does R generate an error?
 ```{r, eval=FALSE}
 True
 ```
@@ -118,12 +118,12 @@ True
 TRUE
 ```
 
-+ Without running it in R, what should R say when you run the following code?  Once you feel confident, check it in R.  Turn in the answer.
+3. Without running it in R, what should R say when you run the following code?  Once you feel confident, check it in R.  Turn in the answer.
 ```{r, opts.label='hideans'}
 (2 + 2 == 4) | (3 + 3 == 4)
 ```
 
-+ Fix the following code so it does not generate an error (notice the code highlighting/coloration trying to help you out?):
+4. Fix the following code so it does not generate an error (notice the code highlighting/coloration trying to help you out?):
 ```{r, eval=FALSE}
 is.character('I'm fine')
 ```
@@ -132,7 +132,7 @@ is.character('I'm fine')
 is.character("I'm fine")
 ```
 
-+ Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators**, **logical operators**, and **relational operators** by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
+5. Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators**, **logical operators**, and **relational operators** by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
 ```{r, eval=FALSE}
 # * /
 # + -

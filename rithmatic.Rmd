@@ -85,7 +85,7 @@ Explore and Extend
 Evaluate
 --------
 
-Complete the following exercises in R and turn in your code (in an .R file named rithmatic_<yourlastname>.R) and answers (as comments within your .R file), e.g.,
+Complete the following exercises in R and turn in your code (in an .R file named rithmatic_\<yourlastname\>.R) and answers (as comments within your .R file), e.g.,
 
 ```{r, eval=FALSE}
 # Question 1

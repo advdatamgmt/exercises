@@ -180,7 +180,7 @@ what you were expecting it to do. A `warning` does not rise to the level of an `
 Explore and Extend
 ------------------
 
-+ Make a really long vector like this: `1:100`.  Explain why R has been printing `[1]` at the beginning of the output all this time.
++ Make a really long `vector` by typing this: `1:100`.  Now that you know how to extract elements from a `vector`, explain why R has been printing `[1]` at the beginning of the output all this time.
 
 + Try and assign something to the **reserved** word `TRUE`.  What is the error?  Can you make sense of it?
 
@@ -213,14 +213,14 @@ devtools::install_github("advdatamgmt/adm")   # this too, but I may update as co
 library(adm)                                  # this you need every time you use the package 'adm'
 ```
 
-+ Is `2dogs` a valid name in R?  Why or why not?
+1. Is `2dogs` a valid name in R?  Why or why not?
 
-+ What is the sum of the 11th and 82nd element of `x`?
+2. What is the sum of the 11th and 82nd element of `x`?
 ```{r, opts.label='hideall'}
 x[11] + x[82]
 ```
 
-+ What is the 5th element of `y1 & y2`?
+3. What is the 5th element of `y1 & y2`?
 ```{r, opts.label='hideall'}
 y3 <- y1 & y2
 y3[5]
@@ -228,12 +228,12 @@ y3[5]
 (y1 & y2)[5]   # without creating a new variable
 ```
 
-+ What is the 62nd element of `z`?
+4. What is the 62nd element of `z`?
 ```{r, opts.label='hideall'}
 z[62]
 ```
 
-+ How many letter c's are in `z`?
+5. How many letter c's are in `z`?
 ```{r, opts.label='hideall'}
 summary(factor(z))[3]   # did you know the oupput is a vector? is.vector()?
 ```

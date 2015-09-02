@@ -82,7 +82,7 @@ img {
 
 <div id="exercise" class="section level2">
 <h2>Exercise</h2>
-<p>In the <a href="rcel1.html">first part of this exercise</a> we learned about <code>vector</code> and <code>factor</code> which are two building blocks of a <code>data.frame</code>. As you recall, a <code>vector</code> requires that each element be of the same <strong>atomic</strong> data type. Now, we meet the first <strong>composite</strong> data type that allows diffferent <strong>atomic</strong> types as elements: <code>list</code>. A specialized <code>list</code> called <code>data.frame</code> will be used to store our datasets and will allow us to operate on our datasets as spreadsheet-like objects.</p>
+<p>In the <a href="rcel1.html">first part of this exercise</a> we learned about <code>vector</code> and <code>factor</code> which are two building blocks of a <code>data.frame</code>. As you recall, a <code>vector</code> requires that each element be of the same <strong>atomic</strong> data type. Now, we meet the first <strong>composite</strong> data type that can contain multiple <strong>atomic</strong> types as elements simultaneously: <code>list</code>. A specialized <code>list</code> called <code>data.frame</code> will be used to store our datasets and will allow us to operate on our datasets as spreadsheet-like objects.</p>
 </div>
 <div id="lists" class="section level2">
 <h2>Lists</h2>
@@ -109,7 +109,7 @@ l <span class="co"># notice the hist that R gives you about how to access a give
 ## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l[[<span class="dv">2</span>]]</code></pre></div>
 <pre><code>## [1] 1 3 2 4</code></pre>
-<p>You can also name the elements and using the <code>$</code> syntax you can access those elements using that name:</p>
+<p>You can also name the elements, and using the <code>$</code> syntax you can access those elements using that name:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;A&quot;</span>, <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>), <span class="dt">c =</span> <span class="ot">TRUE</span>)
 l2 <span class="co"># again notice R's hints about accessing elements</span></code></pre></div>
 <pre><code>## $a
@@ -125,17 +125,17 @@ l2 <span class="co"># again notice R's hints about accessing elements</span></co
 </div>
 <div id="extending-assigment" class="section level2">
 <h2>Extending assigment</h2>
-<p>With a <code>vector</code> you can <strong>assign</strong> a specific element like this:</p>
+<p>With a <code>vector</code> you can <strong>reassign</strong> a specific element like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>)
 x[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">2</span>
 x</code></pre></div>
 <pre><code>## [1] 1 2 2 4</code></pre>
-<p>It works for <code>list</code> also (see Explore and Extend below).</p>
+<p>You can also assign to parts of a <code>list</code> using the list syntax (see Explore and Extend below).</p>
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data frames</h2>
 <p>A <code>data.frame</code> is a specialized <code>list</code> where all the elements of the <code>list</code> have equal length. It is perfect for represening data where there are several values (in columns) per observation (in rows). You create a <code>data.frame</code> with the <code>data.frame()</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>,<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>), 
                  <span class="dt">sex =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>)), 
                  <span class="dt">sorethroat =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>)))
 df</code></pre></div>
@@ -159,16 +159,64 @@ df</code></pre></div>
 ##  Mean   :2.75                   
 ##  3rd Qu.:3.25                   
 ##  Max.   :4.00</code></pre>
+<p>In general, we will usually import a <code>data.frame</code> from an external file, like an Excel spreadsheet, but there are times when you want to build a <code>data.frame</code> from scratch, especially as you attempt to restructure data.</p>
+<p>You can check what variables are in a <code>data.frame</code> like this (it also works for <code>list</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(df)</code></pre></div>
+<pre><code>## [1] &quot;age&quot;        &quot;sex&quot;        &quot;sorethroat&quot;</code></pre>
+<p>We can reference an exact row and column pair in a <code>data.frame</code> (rows first, columns second - this is the usual convention in mathematics and programming):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[<span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] no
+## Levels: no yes</code></pre>
+<p>If we leave out the row or column specification, we get the whole row or column:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[<span class="dv">2</span>, ] <span class="co"># entire second row</span></code></pre></div>
+<pre><code>##   age sex sorethroat
+## 2   2   f         no</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[, <span class="dv">3</span>] <span class="co"># entire third column</span></code></pre></div>
+<pre><code>## [1] no  no  no  no  yes yes yes yes
+## Levels: no yes</code></pre>
+<p>You can use the name of the column too:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[<span class="dv">2</span>, <span class="st">&quot;sorethroat&quot;</span>]  <span class="co"># same as df[2, 3]</span></code></pre></div>
+<pre><code>## [1] no
+## Levels: no yes</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[, <span class="st">&quot;sorethroat&quot;</span>]   <span class="co"># same as df[, 3]</span></code></pre></div>
+<pre><code>## [1] no  no  no  no  yes yes yes yes
+## Levels: no yes</code></pre>
+<p>Finally, you can use the <code>subset</code> command to find rows that match certain criteria:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(df, age ==<span class="st"> </span><span class="dv">2</span>)</code></pre></div>
+<pre><code>##   age sex sorethroat
+## 2   2   f         no
+## 6   2   f        yes</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(df, age ==<span class="st"> </span><span class="dv">2</span> &amp;<span class="st"> </span>sorethroat ==<span class="st"> &quot;yes&quot;</span>)</code></pre></div>
+<pre><code>##   age sex sorethroat
+## 6   2   f        yes</code></pre>
+<p>This is a new <code>data.frame</code> that you can subset and operate upon:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(df, sorethroat ==<span class="st"> &quot;yes&quot;</span>)$age</code></pre></div>
+<pre><code>## [1] 1 2 4 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">median</span>(<span class="kw">subset</span>(df, sorethroat ==<span class="st"> &quot;yes&quot;</span>)$age)</code></pre></div>
+<pre><code>## [1] 3</code></pre>
 </div>
 <div id="explore-and-extend" class="section level2">
 <h2>Explore and Extend</h2>
 <ul>
-<li><p>Demostrate two ways to extract the element <code>2</code> from the second element of <code>l2</code> above. (Hint: combine the syntax from this exercise with that of the last one.)</p></li>
+<li><p>Demostrate two ways to extract the numeric element <code>2</code> from the second element of <code>l2</code> above. (Hint: combine the syntax from this exercise with that of the last one.)</p></li>
+<li><p>What data type is <code>l2[1]</code> vs. <code>l2[[1]]</code> vs. <code>l2$a</code>? What happens when you do <code>l2[c(1,2)]</code> vs. <code>l2[[c(1,2)]]</code>? (Notice the difference between this and how we reference rows and columns of a <code>data.frame</code>.) You know that you can extract elements from a <code>vector</code> using <code>[]</code> so now can you extract a numeric vector equivalent to <code>c(3,4)</code> from <code>l2</code> by generalizing the ideas from this question and the last one?</p></li>
 <li><p>Demostrate two ways to reassign the second element of <code>l2</code> to a value of <code>900</code>. Notice the difference between <code>O</code> (“oh”) and <code>0</code> (“zero”).</p></li>
+<li><p>Prove that a <code>data.frame</code> is a <code>list</code>. Prove that an arbitrary <code>list</code> like <code>l2</code> is not a <code>data.frame</code> (guess what the function is to test if something is a <code>data.frame</code>).</p></li>
+<li><p>In <code>df</code>, replace the 5th observation’s sex with <code>&quot;f&quot;</code>. Now, try to replace the 5th observation’s sore throat with <code>&quot;maybe&quot;</code>. Can you make sense of the error message? Can you create a solution such that at the end <code>df</code> still contains a factor called <code>sorethroat</code> with the help of the function <code>as.character</code>? (By the way, there are <code>as.</code> versions of all the types we’ve studied.) It is used like this:</p></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(df$sorethroat)</code></pre></div>
+<pre><code>## [1] &quot;no&quot;  &quot;no&quot;  &quot;no&quot;  &quot;no&quot;  &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; &quot;yes&quot;</code></pre>
 </div>
 <div id="evaluate" class="section level2">
 <h2>Evaluate</h2>
+<p>R includes several datasets. You can see what is included by running the <code>data()</code> command. For this evaluation, we will use the <code>esoph</code> dataset. You can load it like this <code>data(esoph)</code>. After that, you can refer to it with just <code>esoph</code>. If you are curious about the data, run <code>?esoph</code> which will pull up the help file for the data. This file is in a case-control format where each row represents multiple cases and controls, in variables <code>ncases</code> and <code>ncontrols</code>. So, if you are asked how many observations there are you’d add the number of cases and controls. Include the R code for each problem. Do not do only by hand.</p>
+<ol style="list-style-type: decimal">
+<li><p>Display a simple summary of <code>esoph</code>.</p></li>
+<li><p>Extract the 4th row of <code>esoph</code>.</p></li>
+<li><p>List the names of <code>esoph</code>.</p></li>
+<li><p>What is the number of cases which have tobacco consumption (<code>tobgp</code>) of 30+ gm/day? You’ll find the command <code>sum()</code> helpful. Use it like <code>median()</code> above.</p></li>
+<li><p>What is the number of <em>observations</em> where both the age group (<code>agegp</code>) is 25-34 years and tobacco consumption is 10-19 gm/day?</p></li>
+</ol>
 </div>
 
 
