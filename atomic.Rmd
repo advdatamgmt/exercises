@@ -93,7 +93,7 @@ an expression using each **atomic** data type and each **relational operator** i
 <table class="exercise">
 <tr><th>Data type: </th><td colspan="2">`numeric`</td><td colspan="2">`character`</td><td colspan="2">`logical`</td></tr>
 <tr><th>Evaluates to:</th><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td></tr>
-<tr><th>`<`</th><td>`3 < 2`</td><td>`2 > 3`</td><td>`"a" < "b"`</td><td>`"b" < "a"`</td><td>`FALSE < TRUE`</td><td>`TRUE < FALSE`</td><tr>
+<tr><th>`<`</th><td>`2 < 3`</td><td>`3 > 2`</td><td>`"a" < "b"`</td><td>`"b" < "a"`</td><td>`FALSE < TRUE`</td><td>`TRUE < FALSE`</td><tr>
 <tr><th>`>`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><th>`<=`</th><td>`3 <= 3`</td><td>`2 <= 2`</td><td></td><td></td><td></td><td></td></tr>
 <tr><th>`>=`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
