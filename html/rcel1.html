@@ -243,7 +243,9 @@ state</code></pre></div>
 <p>Before continuing run the first two lines from your console, and add the third line to your R file. It downloads and installs two packages and then loads the a package that gives you access to the data for this exercise. We will discuss all of this a lot more later. For now, just do it mindlessly…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)                  <span class="co"># you only need to do this one time</span>
 devtools::<span class="kw">install_github</span>(<span class="st">&quot;advdatamgmt/adm&quot;</span>)   <span class="co"># this too, but I may update as course goes along</span>
-<span class="kw">library</span>(adm)                                  <span class="co"># this you need every time you use the package 'adm'</span></code></pre></div>
+<span class="kw">library</span>(adm)                                  <span class="co"># this you need every time you use the package 'adm'</span>
+<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())                               <span class="co"># this will make sure your working environment is clean</span>
+                                              <span class="co"># so no naming conflicts arise</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li><p>Is <code>2dogs</code> a valid name in R? Why or why not?</p></li>
 <li><p>What is the sum of the 11th and 82nd element of <code>x</code>?</p></li>

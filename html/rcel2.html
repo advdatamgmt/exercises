@@ -98,7 +98,7 @@ img {
 <pre><code>## [1] TRUE</code></pre>
 <p>Did you notice the <code>[[]]</code> syntax used to index a <code>list</code>? So, each element of a <code>list</code> does not have to be just a single atomic element, but can be a <code>vector</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;A&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>), <span class="ot">TRUE</span>)
-l <span class="co"># notice the hist that R gives you about how to access a given elmeent</span></code></pre></div>
+l <span class="co"># notice the hints that R gives you about how to access a given element like it did for vectors?</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] &quot;A&quot;
 ## 
@@ -199,7 +199,7 @@ df</code></pre></div>
 <h2>Explore and Extend</h2>
 <ul>
 <li><p>Demostrate two ways to extract the numeric element <code>2</code> from the second element of <code>l2</code> above. (Hint: combine the syntax from this exercise with that of the last one.)</p></li>
-<li><p>What data type is <code>l2[1]</code> vs. <code>l2[[1]]</code> vs. <code>l2$a</code>? What happens when you do <code>l2[c(1,2)]</code> vs. <code>l2[[c(1,2)]]</code>? (Notice the difference between this and how we reference rows and columns of a <code>data.frame</code>.) You know that you can extract elements from a <code>vector</code> using <code>[]</code> so now can you extract a numeric vector equivalent to <code>c(3,4)</code> from <code>l2</code> by generalizing the ideas from this question and the last one?</p></li>
+<li><p>What data type is <code>l2[1]</code> vs. <code>l2[[1]]</code> vs. <code>l2$a</code>? What happens when you do <code>l2[c(1,2)]</code> vs. <code>l2[[c(1,2)]]</code>? (Notice the difference between this and how we reference rows and columns of a <code>data.frame</code>.) You know that you can extract elements from a <code>vector</code> using <code>[]</code>. So now, can you extract a numeric vector equivalent to <code>c(3,4)</code> from <code>l2</code> by generalizing the ideas from this question and the last one?</p></li>
 <li><p>Demostrate two ways to reassign the second element of <code>l2</code> to a value of <code>900</code>. Notice the difference between <code>O</code> (“oh”) and <code>0</code> (“zero”).</p></li>
 <li><p>Prove that a <code>data.frame</code> is a <code>list</code>. Prove that an arbitrary <code>list</code> like <code>l2</code> is not a <code>data.frame</code> (guess what the function is to test if something is a <code>data.frame</code>).</p></li>
 <li><p>In <code>df</code>, replace the 5th observation’s sex with <code>&quot;f&quot;</code>. Now, try to replace the 5th observation’s sore throat with <code>&quot;maybe&quot;</code>. Can you make sense of the error message? Can you create a solution such that at the end <code>df</code> still contains a factor called <code>sorethroat</code> with the help of the function <code>as.character</code>? (By the way, there are <code>as.</code> versions of all the types we’ve studied.) It is used like this:</p></li>
