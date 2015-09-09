@@ -95,7 +95,7 @@ an expression using each **atomic** data type and each **relational operator** i
 <tr><th>Evaluates to:</th><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td><td>`TRUE`</td><td>`FALSE`</td></tr>
 <tr><th>`<`</th><td>`2 < 3`</td><td>`3 > 2`</td><td>`"a" < "b"`</td><td>`"b" < "a"`</td><td>`FALSE < TRUE`</td><td>`TRUE < FALSE`</td><tr>
 <tr><th>`>`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><th>`<=`</th><td>`3 <= 3`</td><td>`2 <= 2`</td><td></td><td></td><td></td><td></td></tr>
+<tr><th>`<=`</th><td>`3 <= 3`</td><td>`3 <= 2`</td><td></td><td></td><td></td><td></td></tr>
 <tr><th>`>=`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><th>`==`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><th>`!=`</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -132,7 +132,10 @@ is.character('I'm fine')
 is.character("I'm fine")
 ```
 
-5. Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators**, **logical operators**, and **relational operators** by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
+5. Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
+**logical operators** (`!`, `&`, `|`), 
+and **relational operators** (`<`, `>`, `<=`, `>=`, `==`, `!=`) 
+by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
 ```{r, eval=FALSE}
 # * /
 # + -
@@ -144,4 +147,23 @@ is.character("I'm fine")
 # < > <= >= == !=
 # !
 # & |
+
+#To solve this you need expressions that evaluate differently
+#depending on the order you execute them in (use parentheses to group)
+#then see what R does without the parentheses:
+
+# * has higher presidence than <
+(2 * 3) < (3 * 2)
+2 * (3 < 3) * 2
+2 * 3 < 3 * 2
+
+# ! has lower presidence than <
+(!TRUE) < FALSE
+!(TRUE < FALSE)
+!TRUE < FALSE
+
+# & has lower presidence than !
+!(TRUE | TRUE)
+(!TRUE) | TRUE
+!TRUE | TRUE
 ```

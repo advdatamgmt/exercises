@@ -1,0 +1,288 @@
+---
+title: "Functions"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+### The anatomy of a function
+
+Data are the "nouns" of a computer language while functions are the "verbs."  I also like to think of functions 
+as a type of creature that eats and processes
+data thereby providing a useful output.  Think of yeast which "eat" sugar and process it into alcohol.  
+Functions have a name, a mouth, and a body.  Take the
+`c` function as an example.  The name of the function is `c`.  The mouth is the parentheses.  
+
+```{r}
+c("e", "a", "t")
+```
+
+The food called **arguments** goes in the mouth separated commas (I like to think of them as teeth - OK maybe I'm taking the analogy too far...).  
+
+Where is the body?  R functions are shy and do not like to show off their body.  They hide it, but if you call their name
+without offering food, they will show it to you as they turn to run to run away.
+
+```{r}
+c
+```
+
+`c` has an unusually strange body.  Dark magic is going on there so I suggest you just look away, unless you are into that sort of thing.  Let's look at a more typical function, `factor`, which you met in [Rcel, part 1](rcel1.html)
+
+```{r}
+factor
+```
+
+There is a lot going on here but look at the general structure.  The word `function` followed by the mouth enclosed in parentheses `()` telling
+you some details about the foods this creature eats.  Next, you see a section enclosed in curly brackets `{}`: that's the body.  What is inside?
+R code!  Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.  
+
+If you thought `c` was odd, there are even functions that do not show their mouth without some coaxing.  Can you think of one?  What is an
+"action" you have taken on data that did not need parentheses?  Think about for a moment before continuing.
+
+How about the **operators**?
+
+```{r}
+2 * 2
+2 * c(1, 25, 100)
+```
+
+Is `*` a function?  Indeed, it is, but you have to know how to get these painfully shy creatures to show their mouth.  To do so, you need to
+get bold with calling their name by using backticks. (Remember those? Under the tilde, `~`, on the left side of your keyboard usually.)
+
+```{r}
+`*`(2, 2)
+`*`(2, c(1, 25, 100))
+`*` # show *'s body, more dark magic
+```
+
+### Default and named arguments
+
+All arguments have names, but you do not always need to use them.  Look at the help for
+`factor`
+
+```{r, eval = FALSE}
+?factor
+```
+
+You'll see the following near the top:
+```{r, eval = FALSE}
+factor(x = character(), levels, labels = levels,
+       exclude = NA, ordered = is.ordered(x), nmax = NA)
+```
+
+In order the names of the arguments for
+the `factor` function are `x`, `levels`, `labels`, `exclude`, `ordered`, and `nmax`.  After
+many you will note an equals sign with something after it.  These are the **defaults** for
+the argument if you do not specify them.  However, just because `levels` does not have 
+an explicit **default** in the list does not mean that it does not have one.  If you read further
+into the help it says that `levels` does have a **default** value.  
+
+Since all values have a **default**, the function `factor` will return valid output even if run with
+no arguments:
+```{r}
+factor()
+```
+
+On the other hand `+` does not have **default** arguments:
+```{r, error = TRUE}
+`+`()
+```
+
+So why the names?  The most important reason as you will learn in the next section is so
+that you can refer to the arguments by name in the body of the function.  A secondary use has
+to do with the way you call functions.  If you do not name the arguments when you call the function,
+R assumes that you are using them in order starting with the first.  Names are useful when
+you need to skip an argument, want to be explicit about which argument something is, or if
+you might be using them out of order:
+
+```
+a <- c(1, 1, 2, 2)
+factor(a, labels = c("M", "F"))      # skipping levels argument
+factor(x = a, labels = c("M", "F"))  # being explicit
+factor(labels = c("M", "F"), x = a)  # out of order
+```
+
+### Writing your own functions
+
+Functions are your friend.  Have you ever cut-and-paste a piece code to run it again
+after just tweaking it to run on slightly different data.  Try not to do that, instead use
+functions.  Why?
+
++ When you use functions, you encapsulate little pieces of logic in your program.  It makes your
+code and the thinking behind it much easier.  The code will also be shorter overall.
++ If you cut-and-paste and realize you need to change something you have to do it everywhere, with 
+a function you do it in one place: the function.
++ You will likely find your functions are useful in your next project and a function is a good way to
+carry something useful from one project to another in a useful way.
+
+A major principle of programming is DRY which stands for "Don't Repeat Yourself".  I might cut and paste
+something twice but by the 3rd paste unless I'm seriously not going to do it again and it is a 
+*very* short (one line) piece of code, I am going to be trying to make a function out of it.  This
+rule of not using the same code more than three times is also know as the "rule of three" in
+computer programming.
+
+So how to write a function?  Name it (via assignment with `<-`), use the keyword `function` followed
+by the mouth with a list of arguments.  Then, write the R code as the body.  Use it just like any
+other R function.  Use the name you chose for the argument in the function to work on the data.
+Examples:
+
+```{r}
+add2 <- function(x) { x + 2 }
+add2(2)
+add2(5)
+```
+
+```{r}
+add2sub5 <- function(x) { 
+  x <- x + 2
+  x - 5
+}
+add2sub5(10)
+```
+
+The second example shows that within the body you need to write R code just like you would at the console
+with each **statement** on a separate line.  R returns the result of the last statement.  The variables
+defined in the function are **local** changing them as we did in `add2sub5` does not change them outside
+the function.  This also makes your programs much safer (so you don't accidentally change something
+you did earlier in a long program).
+
+```{r}
+x <- 10
+add2sub5(10)  # inside makes x == 12
+x             # once it returns x is still 10
+```
+
+However, if you use a **uninitialized** variable within you function R can use the one from the
+environment:
+
+```{r}
+y <- 10
+addysub5 <- function(x) {
+  x <- x + y
+  x - 5
+}
+addysub5(10)
+
+y <- 2
+addysub5(10)
+```
+
+### A note on naming
+Remember when we said that you can not use one of the **reserved** words for a **name**.  If not, go back to the [Rcel](rcel.html) exercise.  
+However, you also need to be careful with things like `c` even though they are *not* reserved words when naming functions.  Try the following:
+
+```{r}
+c <- function(x) { x + 5 }
+```
+
+```{r, error=TRUE}
+c(1, 2, 3)     # Uh oh.
+```
+
+You have hidden the usual `c` with your `c`: 
+```{r}
+c(2)
+c
+```
+
+So, get rid of it with the `rm()` function (rm is the mnemonic for remove):
+```{r}
+rm(c)
+c(2) 
+c(1, 2, 3)
+```
+
+However, R treats data differently than functions so
+named data generally does not conflict with other functions
+that you normally have access to.  It is still obviously confusing
+and bad practice to do this (plus you cannot create a function and a piece
+of data named the same thing anyway from the console or code without 
+some serious voodoo - one would replace the other:
+
+```{r}
+c <- c(1, 2, 3)
+c(2, 3, 4)
+c(c, c)
+c <- function(x) { x + 5 }
+c(2)
+rm(c)
+c(2)
+```
+
+Explore and Extend
+------------------
+
++ Add two numbers together using the "mouth"" of the `+` function.
+
++ Write a function called `add5` that adds five to a single number.
+
++ Write a function that takes two arguments a `vector` and a single number and returns the element of the
+vector corresponding to that number.  Call it `pick_n`.
+
++ Write a function that computes the two values that solve  
+a quadratic equation of the form, $ax^2 + bx + c = 0$.  The values as you
+may recall are called roots are given by the following 
+formula that you've probably not seen since high school:
+$$ {-b \pm \sqrt{b^2 - 4ac}}\over{2a} $$
+You can compute the square root with `sqrt()`.  R only returns the last object... how can
+you return "two" things at once?  (Hint: use something you already know.)
+
++ Try to write a function that returns a function.  Here is a suggestion.  Write a function that
+takes a single number as an argument and returns a function that adds that number to its argument.
+Remember you can save the output of a function like anything else.  So, your function, if it were
+called `add_factory`, would work like this:
+
+```{r, echo = FALSE}
+add_factory <- function(x) { function(y) y+x }
+```
+```{r}
+add6 <- add_factory(6)
+add6(6)
+add10 <- add_factory(10)
+add10(6)
+```
+
+Evaluate
+--------
+
+1. Look at the `gl` function.  Give a working example where you use the arguments out of order.
+```{r, opts.label='hideall'}
+gl(length = 20, k = 1, n = 2)
+```
+
+2. Write a function that [cubes](https://en.wikipedia.org/wiki/Cube_%28algebra%29) numbers.  Call it `cube`.
+```{r, opts.label='hideall'}
+cube <- function(x) { x^3 }
+```
+
+3. Write a function that takes a character name and a data.frame and returns that column from a data.frame. Call the
+function `select_column`.
+```{r, opts.label='hideall'}
+select_column <- function(name, df) { df[, name] }
+```
+
+4. The `length` function gives you the length of vector and `sum` adds a numeric vector together.  Write a function called `mean` that takes a vector as input.
+```{r, opts.label='hideall'}
+mean <- function(x) { sum(x) / length(x) }
+```
+
+5. Using your `mean` function write a function that calculates the variance called 
+`var`.  Remember variance is the sum ($\sum$)
+of the squares of values after you subtract the mean ($\bar x$) of all the values ($x_i$) from each divide by the length ($n$)
+minus 1.
+$$ var = {{\sum(x_i - \bar x)^2}\over{n-1}}$$
+```{r, opts.label='hideall'}
+var <- function(x) { sum((x - mean(x))^2) / (n - 1) }
+```

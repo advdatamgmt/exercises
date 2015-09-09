@@ -211,6 +211,8 @@ library(adm)
 install.packages("devtools")                  # you only need to do this one time
 devtools::install_github("advdatamgmt/adm")   # this too, but I may update as course goes along
 library(adm)                                  # this you need every time you use the package 'adm'
+rm(list = ls())                               # this will make sure your working environment is clean
+                                              # so no naming conflicts arise
 ```
 
 1. Is `2dogs` a valid name in R?  Why or why not?
