@@ -11,8 +11,8 @@ params:
   key: TRUE
 ---
 
-1. [Rithmatic](rithmatic.html)
-1. [Atomic Data Types](atomic.html)
-1. [Rcel, part 1](rcel1.html)
+1. [Rithmatic](rithmatic.html) [-key-](pubkey/rithmatic.html)
+1. [Atomic Data Types](atomic.html) [-key-](pubkey/atomic.html)
+1. [Rcel, part 1](rcel1.html) [-key-](pubkey/rcel1.html)
 1. [Rcel, part 2](rcel2.html)
 1. [Functions](function.html)
