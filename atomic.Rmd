@@ -135,7 +135,7 @@ is.character("I'm fine")
 5. Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
 **logical operators** (`!`, `&`, `|`), 
 and **relational operators** (`<`, `>`, `<=`, `>=`, `==`, `!=`) 
-by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 5 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
+by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 6 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
 ```{r, eval=FALSE}
 # * /
 # + -
@@ -146,13 +146,16 @@ by writing each group with equal **presidence** on a single line and writing **o
 # + -
 # < > <= >= == !=
 # !
-# & |
+# & 
+# |
 
 #To solve this you need expressions that evaluate differently
 #depending on the order you execute them in (use parentheses to group)
 #then see what R does without the parentheses:
 
-# * has higher presidence than <
+# * has higher presidence than < 
+# and as the problem says all the relational operators
+# are equal in presidence
 (2 * 3) < (3 * 2)
 2 * (3 < 3) * 2
 2 * 3 < 3 * 2
@@ -162,8 +165,13 @@ by writing each group with equal **presidence** on a single line and writing **o
 !(TRUE < FALSE)
 !TRUE < FALSE
 
-# & has lower presidence than !
-!(TRUE | TRUE)
-(!TRUE) | TRUE
-!TRUE | TRUE
+# ! has higher presidence than &
+!TRUE & FALSE
+(!TRUE) & FALSE
+!(TRUE & FALSE)
+
+# & has higher presidence than !
+FALSE & FALSE | TRUE
+(FALSE & FALSE) | TRUE
+FALSE & (FALSE | TRUE)
 ```

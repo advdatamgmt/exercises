@@ -29,10 +29,11 @@ Functions have a name, a mouth, and a body.  Take the
 c("e", "a", "t")
 ```
 
-The food called **arguments** goes in the mouth separated commas (I like to think of them as teeth - OK maybe I'm taking the analogy too far...).  
+The food called **arguments** goes in the mouth separated by commas (I like to think of them as teeth; OK now, maybe I'm taking the analogy too far...).  
 
 Where is the body?  R functions are shy and do not like to show off their body.  They hide it, but if you call their name
-without offering food, they will show it to you as they turn to run to run away.
+without offering food, they will show it to you as they turn to run to run away realizing you do not
+plan to offer them anything to eat.
 
 ```{r}
 c
@@ -44,7 +45,7 @@ c
 factor
 ```
 
-There is a lot going on here but look at the general structure.  The word `function` followed by the mouth enclosed in parentheses `()` telling
+There is a lot going on here, but look at the general structure.  The word `function` followed by the mouth enclosed in parentheses `()` telling
 you some details about the foods this creature eats.  Next, you see a section enclosed in curly brackets `{}`: that's the body.  What is inside?
 R code!  Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.  
 
@@ -122,7 +123,8 @@ functions.  Why?
 
 + When you use functions, you encapsulate little pieces of logic in your program.  It makes your
 code and the thinking behind it much easier.  The code will also be shorter overall.
-+ If you cut-and-paste and realize you need to change something you have to do it everywhere, with 
++ If you cut-and-paste and realize you need to change something you have to do it everywhere and
+not make any mistakes, with 
 a function you do it in one place: the function.
 + You will likely find your functions are useful in your next project and a function is a good way to
 carry something useful from one project to another in a useful way.
@@ -224,7 +226,7 @@ c(2)
 Explore and Extend
 ------------------
 
-+ Add two numbers together using the "mouth"" of the `+` function.
++ Add two numbers together using the "mouth" of the `+` function.
 
 + Write a function called `add5` that adds five to a single number.
 

@@ -87,8 +87,8 @@ img {
 <p>Data are the “nouns” of a computer language while functions are the “verbs.” I also like to think of functions as a type of creature that eats and processes data thereby providing a useful output. Think of yeast which “eat” sugar and process it into alcohol.<br />Functions have a name, a mouth, and a body. Take the <code>c</code> function as an example. The name of the function is <code>c</code>. The mouth is the parentheses.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&quot;e&quot;</span>, <span class="st">&quot;a&quot;</span>, <span class="st">&quot;t&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;e&quot; &quot;a&quot; &quot;t&quot;</code></pre>
-<p>The food called <strong>arguments</strong> goes in the mouth separated commas (I like to think of them as teeth - OK maybe I’m taking the analogy too far…).</p>
-<p>Where is the body? R functions are shy and do not like to show off their body. They hide it, but if you call their name without offering food, they will show it to you as they turn to run to run away.</p>
+<p>The food called <strong>arguments</strong> goes in the mouth separated by commas (I like to think of them as teeth; OK now, maybe I’m taking the analogy too far…).</p>
+<p>Where is the body? R functions are shy and do not like to show off their body. They hide it, but if you call their name without offering food, they will show it to you as they turn to run to run away realizing you do not plan to offer them anything to eat.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c</code></pre></div>
 <pre><code>## function (..., recursive = FALSE)  .Primitive(&quot;c&quot;)</code></pre>
 <p><code>c</code> has an unusually strange body. Dark magic is going on there so I suggest you just look away, unless you are into that sort of thing. Let’s look at a more typical function, <code>factor</code>, which you met in <a href="rcel1.html">Rcel, part 1</a></p>
@@ -123,9 +123,9 @@ img {
 ##     class(f) &lt;- c(if (ordered) &quot;ordered&quot;, &quot;factor&quot;)
 ##     f
 ## }
-## &lt;bytecode: 0x7f8383999670&gt;
+## &lt;bytecode: 0x7fefe584a540&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
-<p>There is a lot going on here but look at the general structure. The word <code>function</code> followed by the mouth enclosed in parentheses <code>()</code> telling you some details about the foods this creature eats. Next, you see a section enclosed in curly brackets <code>{}</code>: that’s the body. What is inside? R code! Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.</p>
+<p>There is a lot going on here, but look at the general structure. The word <code>function</code> followed by the mouth enclosed in parentheses <code>()</code> telling you some details about the foods this creature eats. Next, you see a section enclosed in curly brackets <code>{}</code>: that’s the body. What is inside? R code! Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.</p>
 <p>If you thought <code>c</code> was odd, there are even functions that do not show their mouth without some coaxing. Can you think of one? What is an “action” you have taken on data that did not need parentheses? Think about for a moment before continuing.</p>
 <p>How about the <strong>operators</strong>?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> *<span class="st"> </span><span class="dv">2</span></code></pre></div>
@@ -166,7 +166,7 @@ factor(labels = c(&quot;M&quot;, &quot;F&quot;), x = a)  # out of order</code></
 <p>Functions are your friend. Have you ever cut-and-paste a piece code to run it again after just tweaking it to run on slightly different data. Try not to do that, instead use functions. Why?</p>
 <ul>
 <li>When you use functions, you encapsulate little pieces of logic in your program. It makes your code and the thinking behind it much easier. The code will also be shorter overall.</li>
-<li>If you cut-and-paste and realize you need to change something you have to do it everywhere, with a function you do it in one place: the function.</li>
+<li>If you cut-and-paste and realize you need to change something you have to do it everywhere and not make any mistakes, with a function you do it in one place: the function.</li>
 <li>You will likely find your functions are useful in your next project and a function is a good way to carry something useful from one project to another in a useful way.</li>
 </ul>
 <p>A major principle of programming is DRY which stands for “Don’t Repeat Yourself”. I might cut and paste something twice but by the 3rd paste unless I’m seriously not going to do it again and it is a <em>very</em> short (one line) piece of code, I am going to be trying to make a function out of it. This rule of not using the same code more than three times is also know as the “rule of three” in computer programming.</p>
@@ -234,7 +234,7 @@ addysub5 &lt;-<span class="st"> </span>function(x) {
 <div id="explore-and-extend" class="section level2">
 <h2>Explore and Extend</h2>
 <ul>
-<li><p>Add two numbers together using the “mouth”&quot; of the <code>+</code> function.</p></li>
+<li><p>Add two numbers together using the “mouth” of the <code>+</code> function.</p></li>
 <li><p>Write a function called <code>add5</code> that adds five to a single number.</p></li>
 <li><p>Write a function that takes two arguments a <code>vector</code> and a single number and returns the element of the vector corresponding to that number. Call it <code>pick_n</code>.</p></li>
 <li><p>Write a function that computes the two values that solve<br />a quadratic equation of the form, <span class="math">\(ax^2 + bx + c = 0\)</span>. The values as you may recall are called roots are given by the following formula that you’ve probably not seen since high school: <span class="math">\[ {-b \pm \sqrt{b^2 - 4ac}}\over{2a} \]</span> You can compute the square root with <code>sqrt()</code>. R only returns the last object… how can you return “two” things at once? (Hint: use something you already know.)</p></li>
