@@ -1,0 +1,382 @@
+---
+title: "Branching Out & Feeling Loopy"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+In the [last lesson](function.html) we had an introduction to functions, a way to encapsulate pieces of R code in a way that we substitute different values 
+(**arguments**) into that code and apply that "recipe" to a set of arbitrary values.  However, what if we need the program to "think", i.e., to make decisions
+about what to do?  What if we need to do something many, many times: ten times, one hundred times, a million times?  Yes, our function might be easier to write
+than the code it runs, but you still don't want to write your function out that many times.  This lesson addresses both of these problems.
+
+### Branch Control Structures
+
+#### `If`-`else`
+
+**Control structures** guide the flow of of your program.  The first types of **control structure** we will consider are **branch structures**.  They are
+called **branch structures** because they place a "fork in the road" in your program.  The first one to look at is `if`:
+
+```{r}
+x <- 5
+
+if (x > 3) {
+  print("x is greater than 3")
+}
+
+if (x > 10) {
+  print("x is greater than 10")
+}
+```
+
+As you can see in the first case R gets to the word `if`, checks the condition in the parentheses, and if it is `TRUE` it runs the code inside the curly
+brackets.  If the expression in the parentheses is `FALSE`, it skips the code in the brackets.  The `print()` function would print out the message that
+is provided to it.  This isn't that important at the interactive console, but will be more important as you advance to running more complex programs.
+You can add an `else` to provide an alternative block of code to execute if the expression is not `TRUE`:
+
+```{r}
+if (x > 10) {
+  print("x is greater than 10")
+} else {
+  print("x is less than or equal to 10")
+}
+```
+
+You can chain together a series of `if` and `else` statements.
+```{r}
+if (x > 10) {
+  print("x is greater than 10")
+} else if (x > 4) {
+  print("x is greater than 4")
+} else {
+  print("x is less than or equal to 4")
+}
+```
+
+You can nest `if`-`else` constructions:
+```{r}
+if (x > 3) {
+  if (x > 4) {
+    print("x is greater than 4")
+  }
+}
+```
+
+#### `Switch`
+
+What if there are several choices?  You can use chained and nested `if` and `else` expressions, but often a simpler solution is the `switch` statement:
+
+```{r}
+center <- function(x, type) {
+  switch(type,
+         mean = mean(x),
+         median = median(x),
+         trimmed = mean(x, trim = 0.1))
+}
+
+x <- c(5, 0, 6, 8, 9, 7, 3, 4, 4, 7)
+
+center(x, "mean")
+center(x, "median")
+center(x, "trim")
+```
+
+Like the builtin R functions you can provide defaults within the **argument** list:
+
+```{r}
+center <- function(x, type = "mean") {
+  switch(type,
+         mean = mean(x),
+         median = median(x),
+         trimmed = mean(x, trim = 0.1))
+}
+center(x)
+```
+
+Within the options you can include more complex code by wrapping it in curly brackets:
+
+```{r}
+center <- function(x, type = "mean") {
+  switch(type,
+         mean = mean(x),
+         median = median(x),
+         trimmed = mean(x, trim = 0.1),
+         mode = {
+           x <- factor(x)
+           s <- summary(x)      # summarize the factor (table of how many each)
+           m <- max(s)          # find the most frequent
+           l <- levels(x)       # extract the levels
+           o <- l[s == m]       # take out the the levels that match the max in the summary
+           as.numeric(o)        # convert back to numbers, factor level names are characters
+         })
+}
+center(x, "mode")
+```
+
+#### `ifelse`
+
+`ifelse` is a function that provides a simple branch logic for a `vector`.  It is technically *not* a **control structure** because it does not
+change the flow of your program, but it is very useful and similar in concept to `if`-`else`.
+
+```{r}
+x
+ifelse(x == 7, "seven", "not seven")
+ifelse(x %% 2 == 0, "even", "odd")
+```
+
+A new operator worth knowing is the `%in%` operator.  You will find the operator
+is useful in many situations and can use it in other places than just inside
+an `ifelse` function call:
+
+```{r}
+ifelse(x %in% c(7, 4, 0), "in", "out")
+```
+
+
+### Loop control structures
+
+#### `for`
+
+The `for` **loop control structure** allows you to **iterate** over a `vector` or `list`.  Here is an example:
+
+```{r}
+for (x in 10:1) {
+  print(x)
+}
+```
+
+Read that as `for` each element in the vector `10:1` (which recall is equivalent to `c(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)`) call it `x` temporarily
+and do what is inside the curly brackets.  You could also **iterate** over the elements of the object directly.  For example:
+```{r}
+l <- list(a = c(3, 4, 5), b = c("dogs", "cats"))
+for (x in l) {
+  print(x[1])
+}
+```
+
+#### `while`
+
+The `while` loop keeps doing something while (get it?) the condition of the loop is `TRUE`.  For example:
+
+```{r}
+i <- 10
+while(i > 0) {
+  print(i)
+  i <- i - 1
+}
+```
+
+If you aren't careful, you could write the loop wrong in a way that it would never end:
+
+```{r, eval = FALSE}
+i <- 10
+while(i > 0) {
+  print(i)
+  i <- i + 1
+}
+```
+
+This is an **infinite loop**.  To get R to stop, hit the little stop sign at the upper right of your console window (usually the lower
+left panel of RStudio).
+
+#### `break` and `next`
+
+Two **reserved** words permit further control of loops: `break` and `next`.  When used within a loop (either `for` or `while`), they
+allow you to completely break out of the loop and continue further along your program (`break`) or skip the rest of the current loop 
+and start the next one (`next`).  They can help with trick situations.  Here are a couple of examples:
+
+```{r}
+i <- 10
+while(TRUE) {
+  if(i == 0) break;
+  print(i)
+  i <- i - 1
+}
+```
+
+```{r}
+i <- 20
+while(TRUE) {
+  if(i < 5) break;
+  if(i %% 2) { 
+    i <- i - 1 
+    next; # go to next iteration if even
+  }
+  print(i)
+  i <- i - 1
+}
+```
+
+Now the latter is unnecessarily complex, but demonstrates the concepts. You will plan to make it simpler in "Explore and Extend".
+
+Explore and Extend
+------------------
++ Sometimes you want to get access to the index of a row or column of a `data.frame` or the index of an element in a vector or list inside
+your `for` loop.  The functions `NCOL`, `NROW`, `length`, and `seq_along` can be a help.  Try each with `esoph` (remember this is a builtin
+dataset in R).  Why is the length of `esoph` 5? 
+
++ Above we created a `while` loop using both `break` and `next`.  Rewrite the `while` loop using neither `break` nor `next`.
+
++ Recall that the `esoph` dataset is written in case-control format such that the table is compressed with the first three columns
+representing patterns of covariates and the last two columns reporting the number of cases and controls with that pattern of covariates.
+Some statistical methods will accept data in this format, but not all.  Sometimes you need to convert the dataset to "long" form where there
+is one row for each subject and four columns.  The first three columns representing the pattern of covariates and the last, which we will call `case`
+will be `case` if the subject was a case and a `ctrl` if the subject was a control.  Our ultimate goal is to convert the `esoph` `data.frame`
+from its current format into the "long" format with those four variables as `factors`.
+
+Let me give you some additional insight into the problem.  Start by examining row 72.  Remember how to do that?
+```{r}
+esoph[72, ]
+```
+
+We see that this pattern of covariates has 2 cases and 3 controls, so in the "long"" dataset we should have the following 5 rows. 
+(Note: that they neither need to be contiguous nor in any particular order, but we need them somewhere in the new `data.frame`.)
+```{r, echo = FALSE}
+suppressWarnings(cbind(esoph[72, 1:3], case = c(1, 1, 0, 0, 0)))
+```
+
+Since manipulating factors gets a little tricky, I'd start the program by converting any `factor` to a `character`. (You learned how 
+to do that last week.)
+
+You can just use `c`  to append a single item to a `vector` or `list`.  For lists, if you try to add a more complex item, `c` does not
+work and you need a more complex solution (like the one for `data.frame` below).
+```{r}
+l <- esoph[72, ]
+is.list(l)
+c(l, case = 1) 
+```
+
+To start a `data.frame` from scratch in this scenario is a little odd.  We'll learn better techniques later, but here is how
+I would first create the new `data.frame` you are going to make. `stringsAsFactors = FALSE` tells R the `data.frame` function
+not to convert any `character` vector into a `factor`: 
+```{r}
+new_df <- data.frame(agegp = "", alcgp = "", tobgp = "", case = 0, stringsAsFactors = FALSE)
+```
+
+
+Finally, you need to know "one weird trick" to append a row or column to a `data.frame` 
+If I have the following `data.frame` and I want to add a row, I just assign to it as though it was there:
+```{r, echo = FALSE}
+df <- as.data.frame(lapply(esoph[1:5, 1:3], as.character), stringsAsFactors = FALSE)
+```
+
+```{r}
+df
+df[6, ] <- list(agegp = "35+", alcgp = "40-79", tobgp = "10-19")
+df
+```
+
+Now, you have all the pieces to write the code to do this.
+But let's not get ahead of ourselves.  The first step to a problem like this is to carefully think through the process before you
+even begin to write a line of code.  We will keep breaking down the process until we can write code for each step, preferably 
+encapsulating steps in functions where appropriate.  
+
+```{r, opts.label = 'hideall'}
+make_new_rows <- function(row) {
+  ncases <- row$ncases
+  ncontrols <- row$ncontrols
+  out <- list()
+  if (ncases != 0) {
+    for (i in 1:ncases) {
+      out[[i]] <- c(row[1:3], case = "case")
+    }
+  }
+  if (ncontrols != 0) {
+    for (i in (ncases + 1):(ncases + ncontrols)) {
+      out[[i]] <- c(row[1:3], case = "cntl")
+    }
+  }
+  out
+}
+
+# prepare the old data.frame
+old_df <- esoph
+old_df$agegp <- as.character(old_df$agegp)
+old_df$alcgp <- as.character(old_df$alcgp)
+old_df$tobgp <- as.character(old_df$tobgp)
+
+# prepare a new data.frame
+new_df <- data.frame(agegp = "", alcgp = "", tobgp = "", case = 0, stringsAsFactors = FALSE)
+
+j <- 1 # to hold the row index in the new data.frame
+for(i in 1:NROW(old_df)) {
+    newrows <- make_new_rows(old_df[i, ])
+    for(r in newrows) {
+      new_df[j, ] <- r
+      j <- j + 1
+    }
+}
+
+new_df$agegp <- factor(new_df$agegp)
+new_df$alcgp <- factor(new_df$alcgp)
+new_df$tobgp <- factor(new_df$tobgp)
+new_df$case <- factor(new_df$case)
+```
+
+
+Evaluate
+--------
+
+Write a program that converts the "long" format back into the case-control format.   
+
+Start here:
+```{r}
+new_old_df <- unique(new_df[, 1:3])
+new_old_df$agegp <- as.character(new_old_df$agegp)
+new_old_df$alcgp <- as.character(new_old_df$alcgp)
+new_old_df$tobgp <- as.character(new_old_df$tobgp)
+new_old_df$ncases <- 0
+new_old_df$ncontrols <- 0
+```
+
+Use the following code fragment plus the techniques in this lecture to finish the job.  Do not forget that you can assign to these selections
+like these to replace the value(s).  Also, do not forget that anything can be replaced with another name (e.g., "75+").
+```{r}
+new_old_df[new_old_df$agegp == "75+" &
+             new_old_df$alcgp == "120+" &
+             new_old_df$tobgp == "10-19", ]
+new_old_df[new_old_df$agegp == "75+" &
+             new_old_df$alcgp == "120+" &
+             new_old_df$tobgp == "10-19", "ncases"]
+```
+
+```{r, opts.label = 'hideall'}
+new_old_df <- unique(new_df[, 1:3])
+new_old_df$agegp <- as.character(new_old_df$agegp)
+new_old_df$alcgp <- as.character(new_old_df$alcgp)
+new_old_df$tobgp <- as.character(new_old_df$tobgp)
+new_old_df$ncases <- 0
+new_old_df$ncontrols <- 0
+
+for (i in 1:NROW(new_df)) {
+  row = new_df[i, ]
+  if (row$case == "case") { 
+    col <- "ncases" 
+  } else {
+    col <- "ncontrols"
+  }
+  oldval <- new_old_df[new_old_df$agegp == row$agegp &
+                         new_old_df$alcgp == row$alcgp &
+                         new_old_df$tobgp == row$tobgp, col]
+  new_old_df[new_old_df$agegp == row$agegp &
+               new_old_df$alcgp == row$alcgp &
+               new_old_df$tobgp == row$tobgp, col] <- oldval + 1
+}
+
+new_old_df$agegp <- factor(new_old_df$agegp)
+new_old_df$alcgp <- factor(new_old_df$alcgp)
+new_old_df$tobgp <- factor(new_old_df$tobgp)
+```
+
