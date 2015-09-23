@@ -1,0 +1,363 @@
+---
+title: "Base Graphics"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child = "config/key_setup.Rmd"}
+```
+
+Exercise
+--------
+
+### High-level plotting functions
+
+High-level plotting functions clear the canvas (where the plot is drawn) and produce an entire plot including axis labels, points, lines, boxes, etc. depending on the type of plot requested.  All the usual suspects in terms of types of figures are avaialble.  We will see many examples using random and builtin datasets.  For some of the examples, you may need to break down the 
+data or the processing done to understand the options that the high-level plot function takes.  Remember to work inside out.
+
+#### Scatter plot
+```{r}
+set.seed(536) # set seed to keep random plots the same
+# create 50 random normally distributed points
+x <- rnorm(50)
+y <- rnorm(50)
+plot(x, y)
+``` 
+
+#### Bar plot
+```{r}
+# 50 random Poisson distributed points with mean 3
+(x <- rpois(50, lambda = 3))
+table(x)
+barplot(table(x))
+``` 
+
+
+#### Curve
+Plots a function
+```{r}
+curve(exp)
+``` 
+
+
+```{r}
+curve(x ^ 3 - 3 * x)
+``` 
+
+#### Histogram
+```{r}
+x <- rnorm(100)
+hist(x)
+``` 
+
+#### Dot chart
+```{r}
+head(VADeaths)  # displays first 6 rows by default
+dotchart(VADeaths)
+``` 
+
+#### Image
+```{r}
+x <- 10*(1:NROW(volcano))
+y <- 10*(1:NCOL(volcano))
+image(x, y, volcano) 
+``` 
+    
+#### Matrix plot
+```{r}
+x <- 1:10
+a <- c(15, 36, 54, 60, 68, 71, 73, 75, 78, 78)
+b <- c(20, 49, 58, 69, 75, 80, 83, 86, 88, 89)
+c <- c(24, 58, 68, 75, 83, 90, 93, 93, 95, 96)
+df <- data.frame(a, b, c)
+matplot(x, df)    # see below when combined with additional options
+``` 
+
+#### Mosaic plot
+```{r}
+mosaicplot(HairEyeColor)
+``` 
+
+#### Box and whiskers plot
+
+`spray` is a `factor`.  Note that the `~` is commonly used in R for showing the dependent and independent variable(s) in models
+and situations like this.
+
+```{r}
+boxplot(count ~ spray, data  =  InsectSprays)
+``` 
+
+Since `spray` is a factor, R even makes a boxplot by default if you do this (note the missing `box`):
+
+```{r}
+plot(count ~ spray, data  =  InsectSprays)
+``` 
+
+
+#### Contour plot
+```{r}
+x <- 10*(1:NROW(volcano))
+y <- 10*(1:NCOL(volcano))
+contour(x, y, volcano)
+``` 
+
+
+### Common options
+
+You can find all the options available (there are lots!) in the help
+for `par`.  The function `par` can be used to set options
+*permanently* during the R session.  However, most options can be
+set within the plot function which is helpful beacuse you do not generally want to
+changes the settings 
+
+#### Titles and axis labels
+The `main` function sets the main title (although you rarely want
+one for publication graphics).  The functions `xlab` and
+`ylab` set the axis labels.  See their use in the "Point type"
+section below.
+
+#### Color
+There are many ways to specify colors (including transparency):
+```{r}
+x <- rnorm(1000)
+y <- rnorm(1000)
+```
+
+By name (see the [R Color Chart](http://research.stowers-institute.org/efg/R/Color/Chart/)):
+```{r}
+plot(x, y, col = "red")
+```
+
+By number:
+```{r}
+plot(x, y, col = 2) # same is above
+```
+
+The `rgb` function allows you to specify the amount of *r*ed, *g*reen, and *b*lue as well as the degree of
+transparency (1.0 is opaque, 0.0 completely invisible).  Transparency lets you better see the density
+of the data.
+```{r}
+plot(x, y, col = rgb(1, 0, 0, 0.2)) 
+``` 
+
+
+#### Point type
+
+For symbols 21 through 25, specify border color (col = ) and fill color (bg = ). 
+```{r}
+plot(x = 1:25, y = rep(1, 25), pch = 1:25, 
+     xlab = "Point type number", 
+     ylab = "", main = "Point type (pch)", bg = "red") 
+``` 
+
+
+```{r}
+plot(x, y, pch = 5) 
+``` 
+
+
+#### Line type
+
+```{r}
+df <- data.frame(lty1 = c(1, 1), lty2 = c(2, 2), lty3 = c(3, 3), 
+                 lty4 = c(4, 4), lty5 = c(5, 5), lty6 = c(6, 6))
+matplot(x = 1:2, df, lty = 1:6, type = "l", 
+        ylab = "lty", xlab = "", col = 1) 
+``` 
+
+Here you see that `type = "l"` specifies lines instead of points for `matplot`.  
+Read help for main `plot` function to learn more about `type` option.
+
+#### Line thickness
+
+```{r}
+# fractional lty's are allowed also like 0.5
+matplot(x = 1:2, df, lwd = c(1, 2, 3, 5, 10, 25), lty = 1, 
+        type = "l", ylab = "", yaxt = "n", xlab = "", col = 1) 
+axis(2, at = 1:6, labels = c(1, 2, 3, 5, 10, 25)) 
+``` 
+
+See section about low-level plotting functions below for more about the `axis` function.
+
+#### Size
+Several related options control the size of various elements.
+`cex` affect the size of the drawing elements.  `cex.axis`
+the axis annotations, `cex.lab` for the labels, and
+`cex.main` for the title.
+```{r}
+x <- rnorm(5000)
+y <- rnorm(5000)
+plot(x, y, main = "5000 Random Points", cex = 0.35, cex.main = 3)
+``` 
+
+
+#### Multiple plots
+
+```{r}
+par(mfrow = c(2, 3)) # makes two rows of plots in three columns, fills by row first
+for(i in 1:6) {
+    x <- rnorm(50)
+    y <- rnorm(50)
+    plot(x, y)
+}
+par(mfrow = c(1, 1)) # put it back, if you don't it will stay 2 rows, 3 columns
+``` 
+
+Note you can also use `mfcol` which will do the same thing, but fills down the column first.
+
+### Low-level plotting functions
+
+Low-level plotting functions allow you to build a plot from 
+scratch.  Usually, you will not completely build a plot from scratch
+but use them to modify elements of a plot that can't be done easily
+with one of the high level plots (as we did when we changed the y-axis
+for line thickness above) with the function `axis` or to add or
+overlay additional elements on a high-level plot.
+
+
+#### Lines
+There are two primary line functions: `lines` and `abline`.
+`lines` takes points and connects them by lines on the plot.
+`ylim` and `xlim` are options you've not see below that 
+limit the plot region.
+
+```{r}
+# make a blank plot that is 0-10 by 0-10
+plot(x = 1, y = 1, type = "n", xlim = c(0, 10), ylim = c(0, 10), xlab = "x", ylab = "y") 
+lines(x = c(2, 8, 9, 10), y = c(5, 7, 2, 3))
+``` 
+
+
+Use abline to add horizontal and vertical lines and regression lines.
+```{r}
+x <- rnorm(50)
+y <- rnorm(50)
+plot(x, y)
+abline(h = 0, lty = 3, col = "blue")
+abline(v = 0, lty = 3, col = "red")
+m <- lm(y ~ x) # linear model
+abline(m, lty = 2) # add the regression line
+``` 
+
+
+#### Points
+Points works like lines but adds points instead of lines.
+
+```{r}
+plot(x, y, type = "n") # blank plot of the right size
+# can use a dataframe instead of separate x & y variables 
+# like we did for lines above
+df <- data.frame(x = x, y = y) 
+points(subset(df, x < 0 & y < 0), col = 1)
+points(subset(df, x > 0 & y < 0), col = 2)
+points(subset(df, x > 0 & y > 0), col = 3)
+points(subset(df, x < 0 & y > 0), col = 4)
+``` 
+
+
+#### Text
+You can add the main title later with `title`, axis labels with
+`mtext`, legends with `legend`, and general text with
+`text`. You can use `expression` to make math expressions
+too for your titles or axes.  Read the help for `plotmath` to
+learn all the things you can do.
+
+```{r}
+plot(x, y)
+title("50 random points")
+text(0.75, -2, "there are 50 points on here")
+mtext(expression(alpha ^ 3))
+``` 
+
+
+### Saving plots
+
+You are going to want to save your plots for publication or to bring
+them in to other programs (Word, Powerpoint, etc.).  To do this with R
+is quite simple: use a different graphics device than the default one that
+draws on your screen.  These include `pdf`, `tiff`, 
+`jpeg`, `png`, and others.  Then, you just repeat the
+commands to draw the plot after calling the new device.  When you are
+done, you call `dev.off()` and that'll write the file and get you back to your
+screen device.  Here is an example of making a PDF:
+
+```{r, eval=FALSE}
+x <- rnorm(50)
+y <- rnorm(50)
+pdf("plot01.pdf")
+plot(x, y)   # nothing comes up on screen
+dev.off()   # you'll find your pdf plot in plot01.pdf
+``` 
+
+In RStudio You can also use the "Export" button in the "Plots" tab of the bottom right panel of your screen (where the
+plot is drawn).
+
+
+Explore and Extend
+------------------
+
+Try to change the optionss for or add additional features (extra lines, points, or text) to the
+high level plot examples.
+
+Evaluate
+--------
+Recreate the following plot **exactly** (e.g., pay particular attention to the type and color of points and lines and the axis labels, etc.) using the data described below.  
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+library(adm)
+plot(mean ~ age, data = onhlong, type = "n", xlab = "Age (years)", ylab = "Mean optic nerve size (mm)")
+with(subset(onhlong, clinhypo == "No" & case == 1), points(age, mean, col = "blue", pch = 19))
+with(subset(onhlong, clinhypo == "Yes" & case == 1), points(age, mean, col = "red", pch = 19))
+with(subset(onhlong, clinhypo == "No" & case == 0), points(age, mean, pch = 19))
+with(onhfit, lines(age, mean))
+with(onhfit, lines(age, upr95, lty = 2))
+with(onhfit, lines(age, lwr95, lty = 2))
+``` 
+
+The caption of the figure which 
+should help you recreate it from the datasets is: "**Figure. Mean optic nerve size vs. age in patients with optic nerve hypoplasia (ONH) and controls.**  Linear regression of the mean optic nerve size of controls (black points: individual control optic nerve measurements, black line: mean optic nerve size of controls, dashed black lines: 95% prediction intervals of mean optic nerve size of controls).   Red points are measurements of optic nerves with clinical ONH.  Blue points represent the clinically unaffected eye of patients with clinically unilateral ONH.  The contralateral optic nerve of ONH patients was generally smaller than control optic nerves."
+
+There are two datasets.  Dataset `onhlong` contains the individual
+measurements on each row.  `case` tells us whether the patient was a
+case or not (factor: 1 vs. 0), `clinhypo` if the nerve was clinically hypoplastic
+(factor: Yes vs. No), `age` of the subject, and `mean` the
+mean optic nerve measurement.  Dataset `onhfit` contains predicted
+values for the regression line `mean` and the upper (`upr95`) and lower
+(`lwr95`).  Each would be plotted by `onhfit`'s `age` variable to create the lines.
+
+Some hints:
+```{r, eval = FALSE}
+# you replace the ... with your code afor the right variable and options:
+with(subset(onhlong, clinhypo == "No" & case == 1), points(...))  
+# you also use the with function with for plotting the lines - you replace the ... with the right variable and options
+with(onhfit, lines(...))
+``` 
+
+Load in the datasets with:
+```{r, eval = FALSE}
+library(devtools); install_github("advdatamgmt/adm") # if you've not refreshed adm recently
+library(adm)
+```
+
+```{r}
+onhfit
+head(onhlong) # shows first 6 observations by default
+``` 
+
+```{r, opts.label = "hideall"}
+plot(mean ~ age, data = onhlong, type = "n", 
+     xlab = "Age (years)", ylab = "Mean optic nerve size (mm)")
+with(subset(onhlong, clinhypo == "No" & case == 1), points(age, mean, col = "blue", pch = 19))
+with(subset(onhlong, clinhypo == "Yes" & case == 1), points(age, mean, col = "red", pch = 19))
+with(subset(onhlong, clinhypo == "No" & case == 0), points(age, mean, pch = 19))
+with(onhfit, lines(age, mean))
+with(onhfit, lines(age, upr95, lty = 2))
+with(onhfit, lines(age, lwr95, lty = 2))
+``` 

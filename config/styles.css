@@ -17,3 +17,7 @@ table.exercise td, table.exercise th {
   padding: 10px;
   text-align: center;
 }
+
+pre, code {
+    background-color: #f0f0f0 !important;
+}
