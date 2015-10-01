@@ -1,0 +1,353 @@
+---
+title: "Food Prep"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+### Slicing, Dicing, and Concatenating Vectors
+
+This module focuses on several common data manipulation task: selecting, subsetting, concatinating, merging, and sorting.
+Some you have already seen before, but this is a good time for review and reinforcement.  For example, when you want 
+to select a part of a `vector` use use the square brackets, `[]`, placing between them a numeric vector that lists the elements you
+want to extract.  R has a builtin `vector` that contains the capital letters: `LETTERS`.  Let's try a few of things with that 
+`vector`.  Remember we are just using `LETTERS` as a stand in for a `vector` you may want to subset in some way:
+
+```{r}
+LETTERS
+# what is the 10th letter?
+LETTERS[10]
+# what are the 15th - 22nd letters?
+LETTERS[15:22]
+# what are the odd indexed letters?
+LETTERS[c(1,3,5,7,9,11,13,15,17,19,21,23,25)]
+```
+
+The latter is a little annoying.  That seems just like a task that a computer should be able to do for you. 
+Indeed, it can, and there is a function in R called `seq` that can easily construct some complex sequences:
+
+```{r}
+# start at 1, end at 26, go by twos
+seq(1, 26, by = 2)  
+LETTERS[seq(1, 26, by = 2)]
+# how about the even ones?
+LETTERS[seq(2, 26, by = 2)]
+```
+
+Another good function: `rep`.  It is technically a mnemonic for "*rep*licate"" but I typically remember "*rep*eat":
+
+```{r}
+# repeat the number 5 10 times
+rep(5, 10)
+# repeat c(1, 2) 5 times
+rep(c(1, 2), 5)
+# repeat 1, 5 times; and 2, 5 times
+rep(c(1, 2), each = 5)
+# repeat 1, 3 times; 2, 2 times; 3, 1 time
+rep(1:3, 3:1)
+```
+
+And who said you can't ask for something more than once when you subset a vector?  Nobody!
+
+```{r}
+LETTERS[rep(1:3, 3:1)]
+```
+
+Want to get rid of something?  Use negative numbers:
+
+```{r}
+LETTERS[-26:-21]
+# another way to get the even ones:
+LETTERS[-seq(1, 26, by = 2)]
+```
+
+Logical vectors return the true ones:
+
+```{r}
+x <- 1:5
+x[c(TRUE, FALSE, TRUE, TRUE, FALSE)]
+# yet another way to get the even letters
+# (remember R "recycles" shorter vectors)
+LETTERS[c(FALSE, TRUE)]
+```
+
+Remember you can create logical vectors using the **relational** and **logical operators**.  Let's create a random 
+sample of 100 letters (remember the `set.seed` is just so you can exactly replicate my example).
+
+```{r}
+set.seed(596)
+letsamp <- sample(LETTERS, 100, replace = TRUE)
+letsamp
+letsamp == "P"
+# how many Ps? add it up - remember TRUE becomes 1 when using as a numeric vector
+sum(letsamp == "P")
+# mind your Ps and Qs
+letsamp[letsamp %in% c("P", "Q")]
+```
+
+Finally, don't forget you can use `c` to concatenate multiple vectors together, not just single numbers:
+```{r}
+c(LETTERS[1:3], c("H", "I"), LETTERS[24:26])
+```
+
+### Slicing, Dicing, and Concatenating Dataframes
+
+Load in the datasets with:
+```{r, eval = FALSE}
+library(devtools); install_github("advdatamgmt/adm") # if you've not refreshed adm recently
+```
+
+```{r}
+library(adm)
+```
+
+A lot of what you need is analogous to vectors.  Just remember that `data.frame` has rows and columns, rows come first.
+
+```{r}
+# first 6 rows of cholera_merge
+cholera_merge[1:6, ]
+```
+
+Using a logical to select rows:
+```{r}
+cholera_merge[cholera_merge$area == 4, ]
+# or the subset command
+subset(cholera_merge, area == 4)
+```
+
+The second seems easier, so why use the first?  You'll need it if you want to assign back to your selection.
+For example:
+
+```{r}
+cholera_merge[cholera_merge$area == 4, ]$area <- 6
+# none
+subset(cholera_merge, area == 4)
+# because they are here
+subset(cholera_merge, area == 6)
+```
+
+```{r, error = TRUE}
+# doesn't work
+subset(cholera_merge, area == 6)$area <- 6
+```
+
+```{r}
+# put it back
+cholera_merge[cholera_merge$area == 6, ]$area <- 4
+```
+
+```{r}
+# women from area 3
+cholera_merge[cholera_merge$sex == "F" & cholera_merge$area == 3, ]
+```
+
+Columns work the same and together with rows if you want (here I used both to keep the output short):
+
+```{r}
+cholera_merge[1:3, 3:4]
+cholera_merge[1:3, c("age", "sex")]
+cholera_merge[cholera_merge$area == 4, c("age", "sex")]
+```
+
+Use `cbind` to "bind" columns together and `rbind` to "bind" rows together (concatination of columns and rows).  Let's
+divide up `cholera_merge` into smaller datasets.  We can use a loop and the `assign` function which has the same effect as
+`<-` but works as a function (allowing us to programmatically specify the name).  The function `paste0` pastes together `character`
+vectors without any space between them.
+
+```{r}
+paste0("a", "b", "c")
+paste0("cholera", 1:5)
+assign("x", 1:3)
+x
+
+for(i in 1:5) {
+  assign(paste0("cholera", i), cholera_merge[cholera_merge$area == i, ])
+}
+
+ls() # lists your assigned variables
+
+cholera1
+cholera2
+```
+
+Now put it back together:
+
+```{r}
+c_m <- rbind(cholera1, cholera2, cholera3, cholera4, cholera5)
+c_m[1:6, ]
+NROW(c_m) == NROW(cholera_merge)
+```
+
+Do something strange with the columns:
+
+```{r}
+cbind(cholera1[, 1:2], cholera2[, 3:4])
+```
+
+What if you `cbind` them a few of the little datasets together?
+
+```{r}
+# extra set of parentheses prints the assignment
+(threecho <- cbind(cholera1, cholera2, cholera3))
+# hmmm... variables with same name
+names(threecho)
+# guess what you can assign directly to names
+names(threecho) <- paste0(c("area", "subject", "age", "sex"), rep(1:3, each = 4))
+threecho
+```
+
+### Merging dataframes
+
+Merging is the way you combine datasets with common variable names.  Take `cholera_disease` as an example:
+
+```{r}
+cholera_disease[1:5, ]
+```
+
+It shares the `subject` with `cholera_merge` so we can merge them together:
+
+```{r}
+cmer <- merge(cholera_merge, cholera_disease)
+cmer[1:10, ]
+```
+
+R automatically determines the common columns if their names are the same, but what if they are not?
+You'll have to use some of the optional arguments to the function.
+
+```{r}
+names(cholera_disease) <- c("id", "disease")
+cmer2 <- merge(cholera_merge, cholera_disease)
+# what happened?
+NROW(cmer)
+NROW(cmer2)
+```
+
+What happened?  Since there were no common columns R created the merge by combining every observation in the first
+`data.frame` with each observation in the second: $25 x 25 = 625$.  So, tell R what to merge on (the first dataset is 
+`x` and the second is `y` in the naming convention):
+
+```{r}
+NROW(merge(cholera_merge, cholera_disease, by.x = "subject", by.y = "id"))
+```
+
+What if observations are missing in one of the `data.frames`?
+
+```{r}
+set.seed(596) # because sample is random
+(cdsamp <- cholera_disease[sample(1:NROW(cholera_disease), 5), ])
+merge(cholera_merge, cdsamp, by.x = "subject", by.y = "id")
+```
+
+Holy disappearing rows, Batman!  Merge only keeps the matches.  Be careful with that fact and be sure to specify another option if you 
+want to keep all the rows of one:
+
+```{r}
+(merall <- merge(cholera_merge, cdsamp, by.x = "subject", by.y = "id", all.x = TRUE))
+merall[20:25, ]
+```
+
+All the rows from the `x` `data.frame` are there with missing data from the `y` one represented by `NA`.  Most frequently you want
+to use one or both of the all options which will save you a lot of heartache when you are merging datasets that you do not realize
+are incompatible.  
+
+### Sorting vectors and dataframes
+
+Sorting is a common operation.
+
+```{r}
+sort(merall$age)
+```
+
+But what if you want to sort *by* something in a `data.frame`.  What you would want to know is the "subset" that was ordered in 
+a way that it returned the elements in sorted order.  That's where the `order` function comes in:
+
+```{r}
+merall$age
+order(merall$age)
+```
+
+See how if you take each element of `merall$age` given by `order` you will get the sorted list?  What is the 2nd element of
+`merall$age`? `20` The 11th? `20`.  So:
+
+```{r}
+merall$age[order(merall$age)]
+identical(merall$age[order(merall$age)], sort(merall$age))
+```
+
+`order` is more useful for `data.frames` where it can be used to sort the `data.frame`.  Here we sort `merall` by `age`:
+
+```{r}
+merall[order(merall$age), ]
+```
+
+### Extracting the first and last rows of dataframes
+
+`head` and `tail` extract the first and last elements of a `vector` or the first and last rows of a `data.frame` (6 by default):
+
+```{r}
+head(merall)
+tail(merall)
+```
+
+You can add an optional argument to tell it how many to extract:
+
+```{r}
+head(merall, 1)
+tail(merall, 2)
+```
+
+You can use negative numbers to extract "all but" that many:
+
+```{r}
+head(merall, -10)
+tail(merall, -15)
+```
+
+
+Explore and Extend
+------------------
+
++ Write a function named `extreme` that takes a `numeric vector` as input and returns a `list` of two elements: the first named
+`smallest` containing the smallest three elements in the `numeric vector` and the second `list` element named `biggest` containing
+the largest three elements in the `numeric vector`.
+
++ Write a function `sampdf` that takes a `data.frame` as an argument and single number and returns a random sample of the rows of
+the dataframe with the number of rows specified in the argument.
+
++ Write a loop that takes the `cholera_merge` and extracts the rows containing the oldest person in each area.  Hint: combine select/subset techniques, with `order` and `tail`.  For now, just use the `print` function to print out each row.
+
+Evaluate
+--------
+
+Take the last "Explore and Extend" exercise one more step and use `rbind` to create a new `data.frame` from the rows.  On the
+first round of the loop, you'll need to save the first row *as* the new `data.frame`.  On the subsequent **iterations** (rounds
+through the loop), you'll need to `rbind` to the `data.frame` and save that to the `data.frame` variable name you choose.  Hear some
+branch logic that description?
+
+```{r, opts.label = "hideall"}
+for(i in 1:5) {
+  x <- cholera_merge[cholera_merge$area == i, ]
+  x <- x[order(x$age), ]
+  t <- tail(x, 1)
+  if(i == 1) {
+    df <- t
+  } else {
+    df <- rbind(df, t)
+  }
+}
+```
+
+Then, *think* about how you can use this for our `esoph` transformation from case-control to long format.  Try out your ideas as time
+permits.
