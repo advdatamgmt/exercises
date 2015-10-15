@@ -123,7 +123,7 @@ img {
 ##     class(f) &lt;- c(if (ordered) &quot;ordered&quot;, &quot;factor&quot;)
 ##     f
 ## }
-## &lt;bytecode: 0x7f9c32914f40&gt;
+## &lt;bytecode: 0x7fcc3194a780&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>There is a lot going on here, but look at the general structure. The word <code>function</code> followed by the mouth enclosed in parentheses <code>()</code> telling you some details about the foods this creature eats. Next, you see a section enclosed in curly brackets <code>{}</code>: that’s the body. What is inside? R code! Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.</p>
 <p>If you thought <code>c</code> was odd, there are even functions that do not show their mouth without some coaxing. Can you think of one? What is an “action” you have taken on data that did not need parentheses? Think about for a moment before continuing.</p>
@@ -253,7 +253,7 @@ addysub5 &lt;-<span class="st"> </span>function(x) {
 <li><p>Look at the <code>gl</code> function. Give a working example where you use the arguments out of order.</p></li>
 <li><p>Write a function that <a href="https://en.wikipedia.org/wiki/Cube_%28algebra%29">cubes</a> numbers. Call it <code>cube</code>.</p></li>
 <li><p>Write a function that takes a character name and a data.frame and returns that column from a data.frame. Call the function <code>select_column</code>.</p></li>
-<li><p>The <code>length</code> function gives you the length of vector and <code>sum</code> adds a numeric vector together. Write a function called <code>mean</code> that takes a vector as input.</p></li>
+<li><p>The <code>length</code> function gives you the length of vector and <code>sum</code> adds a numeric vector together. Write a function called <code>mean</code> that takes a vector (of arbitrary length) as input and calculates the average of the numbers in that vector using the <code>length</code> and <code>sum</code> functions.</p></li>
 <li><p>Using your <code>mean</code> function write a function that calculates the variance called <code>var</code>. Remember variance is the sum (<span class="math">\(\sum\)</span>) of the squares of values after you subtract the mean (<span class="math">\(\bar x\)</span>) of all the values (<span class="math">\(x_i\)</span>) from each divide by the length (<span class="math">\(n\)</span>) minus 1. <span class="math">\[ var = {{\sum(x_i - \bar x)^2}\over{n-1}}\]</span></p></li>
 </ol>
 </div>

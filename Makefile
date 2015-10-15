@@ -1,4 +1,4 @@
-RSCRIPT=/usr/bin/Rscript
+RSCRIPT=/usr/local/bin/Rscript
 
 all: $(patsubst %.Rmd, html/%.html, $(wildcard *.Rmd)) 
 

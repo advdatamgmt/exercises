@@ -275,7 +275,8 @@ function `select_column`.
 select_column <- function(name, df) { df[, name] }
 ```
 
-4. The `length` function gives you the length of vector and `sum` adds a numeric vector together.  Write a function called `mean` that takes a vector as input.
+4. The `length` function gives you the length of vector and `sum` adds a numeric vector together.  Write a function called `mean` that takes a vector (of arbitrary length) as input and calculates the average of the numbers in that vector using
+the `length` and `sum` functions.
 ```{r, opts.label='hideall'}
 mean <- function(x) { sum(x) / length(x) }
 ```
