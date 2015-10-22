@@ -1,0 +1,163 @@
+---
+title: "Complex Table Example"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r, results='asis'}
+library(adm)
+
+# need n1 and n0 for the header of the table
+# these will just be kept in a vector
+n <- summary(lbw$low)
+n0str <- paste0("n=", n["0"])
+n1str <- paste0("n=", n["1"])
+
+# make some derived variables
+
+lbw$age.lte20 <- factor(ifelse(lbw$age <= 20,1,0))
+lbw$lwt.lt110 <- factor(ifelse(lbw$lwt < 110,1,0))
+lbw$ptl.ge1 <- factor(ifelse(lbw$ptl != '0',1,0))
+lbw$ftv.ge1 <- factor(ifelse(lbw$ftv != '0',1,0))
+lbw$black <- factor(ifelse(lbw$race == 'black',1,0))
+lbw$white <- factor(ifelse(lbw$race == 'white',1,0))
+lbw$otherrace <- factor(ifelse(lbw$race == 'other',1,0))
+
+# create the header
+# note that &___; are called HTML entities and allow you produce special characters
+header <- list()
+HEADERATTR <- list(NULL, list(colspan = 2), NULL, list(colspan = 2), NULL, NULL)
+header <- c(header, 
+            html(
+              html(
+                # &nbsp; are non-breaking spaces for some padding
+                # in the empty column
+                c("", "Low birth weight", "&nbsp;&nbsp;&nbsp;", 
+                  "Non-low birth weight", "", ""), 
+                "th", 
+                HEADERATTR
+              ), 
+              "tr")
+)
+
+HEADERATTR2 <- mapply(c, 
+                      HEADERATTR, 
+                      list(NULL, list(style = "border-bottom: black solid"), NULL, 
+                           list(style = "border-bottom: black solid"), NULL, NULL
+                      )
+)
+
+header <- c(header, 
+            html(
+              html(
+                c("", n1str, "", n0str, "", ""), 
+                "th", 
+                HEADERATTR2), 
+              "tr")
+)
+header <- c(header, 
+            html(
+              html(
+                c("Variable", "n", "%", "", "n", "%", 
+                  "&chi;<sup>2</sup>", "p &dagger;"), 
+                "th", 
+                list(list(style = "border-bottom: black solid"))), 
+              "tr")
+)
+header <- paste(header, collapse = "")
+
+# now lets work on the body
+# watch it - rownames (without a period)
+# is a function you probably don't want to mask so use
+# row.names instead
+row.names <- c(
+  "Age of mother, &le;20 years", 
+  "Race", 
+  "&nbsp;-&nbsp; Black", 
+  "&nbsp;-&nbsp; White", 
+  "&nbsp;-&nbsp; Other", 
+  "Weight at last menstrual period &lt;110 lbs", 
+  "History of premature labor", 
+  "Smoked during pregnancy", 
+  "History of hypertension", 
+  "History of uterine irritability", 
+  "At least one physician visit during first trimester")
+
+# build a function to output each row
+row.builder <- function(varname) {
+  if(varname == "NULL") return(rep("", 7))
+  tab <- table(lbw[, varname], lbw$low)
+  props <- sprintf("%.1f", prop.table(tab, 2)[2, ]*100)
+  stats <- summary(tab)
+  # automatically determine if Fisher test is appropriate
+  if(stats$approx.ok) {
+    chisq <- sprintf("%.2f", stats$statistic)
+    pval <- stats$p.value
+    twotail <- ""
+  } else {
+    chisq <- "&Dagger;"
+    pval <- fisher.test(tab)$p.value
+    twotail <- "&sect;"
+  }
+  star <- ifelse(pval<0.05, "*", "")
+  pval <- ifelse(pval<0.001, "&lt;0.001", 
+                 ifelse(pval<0.01, sprintf("%.3f", stats$p.value), 
+                        sprintf("%.2f", stats$p.value)))
+  pval <- paste(pval, star, twotail, sep = "")
+  c(tab[2, 2], props[2], "", tab[2, 1], props[1], chisq, pval)
+}
+
+# now that's more like magic
+vars <- c("age.lte20", "NULL", "black", "white", "otherrace", 
+          "lwt.lt110", "ptl.ge1", "smoke", "ht", "ui", "ftv.ge1")
+body <- do.call(rbind, lapply(vars, row.builder))
+
+# all but last row
+row.names1 <- sapply(row.names[-length(row.names)], 
+                     function(x) html(x, "td", list(list(style="font: bold"))))
+body1 <- apply(body[-nrow(body), ], 1, 
+               function(x) html(x, "td", list(list(style = "text-align: center"))))
+
+# last row special formatting
+row.names2 <- html(row.names[length(row.names)], "td", 
+                   list(list(style = "font: bold; border-bottom: black solid")))
+body2 <- html(body[nrow(body), ], "td", 
+              list(list(style = "text-align: center; border-bottom: black solid")))
+
+# recombine
+row.names <- c(row.names1, row.names2)
+body <- c(body1, body2)
+
+# join row.names to body
+body <- html(paste(row.names, body), "tr")
+
+# join header to body
+all <- paste(header, body, sep = "")
+
+# title (the \ at the end of the line let's me break this long string without
+# an error)
+cat(html("<b>Table 1.</b> Frequency of exposures in cases of low birth \
+         weight (&lt;2500 g) vs. non-low birth weight.", "p"), 
+    file = "table1.html")
+
+# table output
+table <- html(all, "table", list(list(style = "border-collapse:collapse")))
+cat(table, file = "table1.html", append = TRUE)
+
+# footnotes
+footnotes <- c(
+  "&dagger; &alpha;=0.05. Significant p-values are marked with an asterisk (*).<br/>", 
+  "&Dagger; Fisher's Exact Test<br/>", 
+  "&sect; Two-tailed p-value<br/>")
+cat(html(footnotes, "small"), file = "table1.html", append = TRUE)
+
+# file was written above but we'll read it back in and display here
+cat(readLines("table1.html"))
+```
