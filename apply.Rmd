@@ -1,0 +1,373 @@
+---
+title: "Applying Yourself"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+### The `apply` family
+
+R has a group of functions that work in a similar fashion. Each of these
+functions *takes a function as an argument* and applies it to each of the
+elements of one of its other arguments.  These functions can replace most
+`for`-loops in R and they are faster too.  The model function for this
+family of functions that takes a function as an argument and applies it to
+another one of its arguments is: `apply`.  (Programmers are not that
+creative with names - nor should they be!)
+
+Not only are `apply` family functions generally faster than loops, but
+they are also more "R-like." That is to say, when you think in terms of
+these functions you are thinking more like an R programmer. 
+Just like different human languages have different figures of speech and modes 
+of thinking that characterize them, so do computer languages.
+
+As we have discussed previously, R lends itself to functional types of 
+programming idioms, one of which is called mapping. Mapping
+means taking a function and "mapping" it or "applying"
+it to every sub-element of vector, list, or array.  So the `apply` family
+is a very "functional" programming idiom.
+
+So, let's get started with the `apply` function.  The `apply` function works
+on the rows or columns of an `data.frame` or `array`.  We have not met 
+an `array` before but they are essentially a `vector` that has multiple 
+dimensions of all the same **atomic** data type.  
+We will create one that contains 10,000 coin
+flip experiments using 100 flips in each experiment.  
+The function `rbinom` generates random binomially distributed
+data.
+
+```{r}
+# generates 100 fair coin flips
+rbinom(100, 1, 0.5)
+# do it 10,000 times!
+experiments <- replicate(10000, rbinom(100, 1, 0.5))
+# first 10 rows and first 10 columns
+experiments[1:10, 1:10]
+# what size is it?
+NROW(experiments)
+NCOL(experiments)
+dim(experiments)
+```
+
+So we have 10,000 experiments of 100 coin flips each.  Each expermient is in 
+one column (because there are 100 rows).  If we wanted to plot a histogram of
+how many heads were flipped (calling 1 as heads and 0 as tails) then we could 
+use the apply function to add each column up before calling `hist`:
+
+```{r}
+# the 2 represents the columns (remember they come "second" when
+# talking about rows vs. columns); you would use 1 instead if you
+# wanted to apply the function to the rows
+heads <- apply(experiments, 2, sum)
+length(heads)
+hist(heads)
+mean(heads)
+var(heads)
+```
+
+### `lapply`
+
+You probably recall from your basic statistics class that as the sample size 
+increases our confidence in the mean increases. That means that the 
+standard deviation / variance 
+around the estimate of the mean decreases. Let’s test that in R. We could
+do the following, but it is a lot of typing to do almost the same thing:
+
+```{r}
+sd(replicate(1000, mean(rnorm(10,   100, 25)))) # 1000 experiments of n=10
+sd(replicate(1000, mean(rnorm(100,  100, 25)))) # 1000 experiments of n=100
+sd(replicate(1000, mean(rnorm(1000, 100, 25)))) # 1000 experiments of n=1000
+```
+
+What if we converted the second part of the experession to a function like this?
+```{r}
+rsd <- function(n) sd(replicate(1000, mean(rnorm(n, 100, 25))))
+```
+
+Then, we could use the `lapply` function to complete these three lines of code
+in one:
+
+```{r}
+lapply(c(10, 100, 1000), rsd)
+```
+
+It can get annoying to name little utility functions like `rmean` so it turns
+out that in R you can just use what is called **lambda** functions, i.e.,
+unnamed functions.  So, you could do the above like this:
+```{r}
+lapply(c(10, 100, 1000), function(n) sd(replicate(1000, mean(rnorm(n, 100, 25)))))
+```
+
+That way you do not have to name the other function.  It is your call when
+you name the function and use a lambda function.  
+Most advanced programmers would do the latter in this case
+because it is short enough to comprehend easily, but either is absolutely
+acceptable.
+
+Now, let's return not only the variance but the mean.  Maybe here the the
+function is complicated enough that it is worth naming separately for clarity:
+
+```{r}
+rmv <- function(n) {
+  r <- replicate(1000, mean(rnorm(n, 100, 25)))
+  list(mean = mean(r), var = var(r))
+}
+lapply(c(10, 100, 1000), rmv)
+```
+
+Even more compact - and adding one more power of 10?
+```{r}
+lapply(10^(1:4), rmv)
+```
+
+This is less error prone, requires less typing, and is much more clear
+than cutting and pasting a lot of code.
+
+When you return a single value you can use `sapply` to return a `vector` instead
+of a `list`:
+```{r}
+sapply(10^(1:3), rsd)
+```
+
+or an `array` when you return more than one:
+```{r}
+sapply(10^(1:3), rmv)
+```
+
+### Are you feeling ragged yet?
+
+You will quite frequently run into datasets like the following one listing the ocular photographs of patients,
+each with a variable number of photographs:
+
+```{r, eval = FALSE}
+# yep do it again if you've not recently
+library(devtools); install_github("advdatamgmt/adm") 
+```
+
+```{r}
+library(adm)
+head(photoqual)
+```
+
+It may be tempting to run the `summary` function on the dataset, but you cannot do that in this case. You would
+get a weighted average of age by the number of photographs that the patient had taken. Not at all the
+correct thing to report. Plus, the observations are not independent so your inferential statistics would be
+all messed up.
+
+The `tapply` function to the rescue which allows a function to be applied to a 
+**ragged array**, i.e., an unbalanced or an inconsistent number of observations 
+in each set/array. So, what if you wanted to count how many photographs
+each patient had on each eye?  Here's how you would do it:
+
+```{r}
+tapply(photoqual$eye, photoqual$ptid,function(x) summary(x))
+```
+
+Pretty amazing, eh? I think this is even more amazing, it uses the `do.call`
+function which takes a function name and applies it to a list (the second argument):
+
+```{r}
+do.call(rbind, tapply(photoqual$eye, photoqual$ptid, function(x) summary(x)))
+```
+
+`do.call` is useful when you are trying to `apply` a function like `rbind` that
+takes `...` as an argument (like `sum` but not like `mean` - take a look
+at the help for each).
+
+By the way, another function called `aggregate` can do the same thing as the 
+`do.call` + `tapply` combination in this case
+(and is probably better in this instance because you
+probably want the patient identifer associated with the answer):
+
+```{r}
+aggregate(photoqual$eye, photoqual['ptid'], function(x) summary(x))
+```
+
+
+However, `tapply` is a good way to capture a single variable 
+for all patients in a dataset like this.  For example, here is the 
+correct `summary` of the age for these patients:
+```{r}
+tapply(photoqual$age, photoqual$ptid,function(x) head(x,1))
+summary(tapply(photoqual$age, photoqual$ptid, function(x) head(x,1)))
+```
+
+### You are not satisfied with just one argument?!?
+
+There are several other `apply` family functions. Several are beyond the 
+scope of this class, but as you advance in your R programming,
+I want you to know they are there and to give you a brief taste of what
+is possible with one of them. The major apply functions that we are "skipping"
+are: `mapply`, `rapply`, `vapply`, and `eapply`. I would recommend that if 
+you want to learn more that you proceed in that
+order. Here is a taste of `mapply`
+which uses each of the arguments after the function 
+in order and walks through both
+simultaneously similar to a previous example:
+
+```{r}
+mapply(rep, 1:4, 4:1)
+# not the same as:
+rep(1:4, 4:1)
+# but the same as:
+list(
+  rep(1, 4),
+  rep(2, 3),
+  rep(3, 2),
+  rep(4, 1)
+)
+```
+
+Useful? You betcha! Is that obvious to you now? Probably not... but be on the lookout. The apply
+family can save you enormous amounts of time and can make you feel like you have a magic wand for data.
+
+### Advanced tables
+
+Markdown tables are fairly limited.  However you can create them 
+programmatically as follows:
+
+```{r, results = "asis"}
+library(knitr)
+tab <- do.call(rbind, tapply(photoqual$eye, photoqual$ptid, function(x) summary(x)))
+kable(tab)
+```
+
+What you cannot see is that the block of R markdown is specified as `{r, results = "asis"}`
+instead of just `{r}`.  You only need to call the `knitr` library once in a
+given file.  
+
+However, if you want to span columns or rows then you will need HTML,
+the language of the World Wide Web.  Teaching
+you a lot about HTML is beyond the scope of this class, but essentially 
+R Markdown allows raw HTML if you specify it directly or
+if your R code returns valid HTML in an `{r, results = "asis"}` block:
+
+```{r, results = "asis"}
+cat("This is <b>bold</b> and this is <i>italics</i>.")
+```
+
+`cat` is a function very similar to `print` but is even more "raw" than print
+essentially just spitting out exactly what you give it.  You can separate
+multiple things to print out by commas.
+
+Here is an excellent tutorial on HTML tables: <http://www.w3schools.com/html/html_tables.asp>.
+Ignore CSS for now (that's how you do special formatting) and focus on the main
+table tags: `table` (overall table), `tr` (table row), 
+`th` (table heading), `td` (table data).  
+With those tags and their attributes, you
+can build fancy tables:
+
+```{r, results = 'asis'}
+cat('<table>
+<tr><th>Animal</th><th colspan="2">Size</th></tr>
+<tr><td></td><td>Small</td><td>Big</td></tr>
+<tr><td>Dogs</td><td>5</td><td>10</td></tr>
+<tr><td>Cats</td><td>20</td><td>3</td></tr>
+</table>')
+```
+
+That is a lot of typing.  So I have written a `html` function in the `adm`
+package to make it "easier" at least for the reptative row elements:
+
+```{r, results='asis'}
+cat("<table>",
+    '<tr><th>Animal</th><th colspan="2">Size</th></tr>',
+    html(
+      list(
+          html(list("Animal", "Small", "Big"), "td"),
+          html(list("Dogs", 5, 10), "td"),
+          html(list("Cats", 20, 3), "td")
+      ), 
+      "tr"
+    ),
+  "</table>"
+)
+```
+
+Maybe that doesn't look any easier, but that's where the `apply` family
+comes to the rescue for bigger data:
+
+```{r}
+animals <- data.frame(Animal = c("Dogs", "Cats", "Birds", "Elephants"),
+                      Small = c(5, 10, 15, 0),
+                      Big = c(10, 3, 10, 20))
+animals
+```
+
+```{r, results = 'asis'}
+cat("<table>",
+    '<tr><th>Animal</th><th colspan="2">Size</th></tr>',
+    html(html(names(animals), "td"), "tr"),
+    sapply(apply(animals, 1, html, "td"), html, "tr"),
+    "</table>"
+)
+```
+
+An additional text function that you will likely find helpful is `sprintf`.  It
+has a little bit of a complicated syntax, but it is very powerful for formatting
+your data as text:
+
+```{r, results = 'asis'}
+cat("<table>",
+    '<tr><th>Animal</th><th colspan="4">Size</th></tr>',
+    '<tr><td></td><td>Big: n</td><td>(%)</td><td>Small: n</td><td>(%)</td><tr>',
+    sapply(
+      apply(animals, 1,
+            function(row) {
+              html(
+                list(row[1],
+                  row[2],
+                  sprintf("(%.1f)", as.numeric(row[2])*100/sum(as.numeric(row[2:3]))),
+                  row[3],
+                  sprintf("(%.1f)", as.numeric(row[3])*100/sum(as.numeric(row[2:3])))),
+                "td"
+              )
+            }),
+      html,
+      "tr"
+      ),
+    "</table>"
+)
+```
+
+Read the help for `sprintf` for more detail.
+
+Explore and Extend
+------------------
+
++ What do you expect the average number of heads is if you run `apply` on the
+rows rather than the columns of experiments is?  Check it.
+
++ How could you use `do.call` and `rbind` to simplify the shape changes we 
+have been doing to `esoph`?
+
++ Why do we need `as.numeric` in the last part of the section above?
+
+Evaluate
+--------
+
+Use `tapply` to determine the mean quality each patient had in each eye.  That
+is calculate the mean of the quality for the first patient's right eye, the
+first patient's left eye, etc.
+
+Look at the help for `tapply` and realize that you can use more than one factor
+as the `INDEX`.  Note that the help says it has to be a `list`.  How do you make
+a `list`? 
+
+Why are some values missing in your result?
+
+```{r, opts.label = 'hideall'}
+tapply(photoqual$quality, list(photoqual$ptid, photoqual$eye), mean)
+```

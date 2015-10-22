@@ -21,3 +21,4 @@ params:
 1. [Base Graphics](basegraph.html) [[-key-]](pubkey/basegraph_key.html)
 1. [Food Prep (Slice, Dice, Concatenate, Merge)](foodprep.html)
 1. [Delicacies (Missing, Text Data, and Dates)](delicacies.html)
+1. [Apply Yourself](apply.html)
