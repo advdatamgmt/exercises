@@ -1,0 +1,241 @@
+---
+title: "Grammar of Graphics"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child = 'config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+### Install ggplot2
+
+Grammar of graphics is found in package `ggplot2`.  
+
+```{r, eval = 5}
+# once:
+install.packages("ggplot2")
+
+# everytime:
+library(ggplot2)
+``` 
+
+### Using ggplot2
+
+The function is called `ggplot` (note no number 2 on the end).  You
+want to store this output in a name because all you are doing below is
+telling ggplot how to "think"" about the data, i.e., what represents x
+and y in this case.  If you run it directly, you'll get an error "No
+layers in plot" because you've not added a layer to draw.  
+
+You will need to refer frequently to the `ggplot2` documentation
+found at <http://docs.ggplot2.org/current/>.  Note that the
+functions have often have "aesthetics"" listed, in addition to the usual 
+"arguments" that all R functions have, 
+that control the way the data is displayed.  Aesthetics are placed
+within a function
+called `aes` within your function call as an argument.  Watch
+for that pattern below as we work to recreate a version of our optic nerve
+head figure:
+
+```{r, }
+library(adm)
+myplot <- ggplot(onhlong, aes(x = age, y = mean))
+``` 
+
+Now we can add a layer to plot the points:
+
+```{r, tidy = FALSE}
+myplot + geom_point()
+``` 
+
+#### More aesthetics
+
+But we want the different points to have colors depending on the
+groups right?  This is an aesthetic (see the documentation for
+`geom_point` to see what else you can control).
+
+```{r, tidy = FALSE}
+myplot + geom_point(aes(color = case))
+``` 
+
+Yet we really want three groups right?  To do that we need a little
+trick to combine the two variables into a new one.  Just paste them
+together and save it as a new variable to the dataset:
+
+```{r, tidy = FALSE}
+# the trick - see what it did?  "1-Yes", "0-No", and "1-No" are three groups
+(onhlong$group <- factor(with(onhlong, paste(case, clinhypo, sep = "-"))))
+# need to resave myplot because it "stores" a memory of the dataset before we made
+# the change
+myplot <- ggplot(onhlong, aes(x = age, y = mean))
+myplot + geom_point(aes(color = group))
+``` 
+
+#### Regression Lines
+
+Good start.  Now let's add a regression line with a 95% confidence limit
+based on the data itself:
+
+```{r, tidy = FALSE}
+myplot + 
+    geom_point(aes(color = group)) + 
+    stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"))
+``` 
+
+But you wanted the prediction interval in this case.  There is no
+automatic way to create the prediction band with ggplot.  So we'll use
+our `onhfit` dataset.
+
+```{r, tidy = FALSE}
+myplot +
+  geom_point(aes(color = group)) +
+  # se = FALSE just for the line (no standard error)
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  # now the "ribbon"
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95))
+``` 
+
+Ooops... order of layers and transparency matters:
+
+```{r, tidy = FALSE}
+myplot +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE)
+``` 
+
+or
+```{r, tidy = FALSE}
+myplot +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) 
+``` 
+
+#### Legends
+
+Control the legends with `guides()`:
+
+```{r, tidy = FALSE}
+myplot +
+  geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+  geom_point(aes(color = group)) +
+  stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+  # just get rid of them for now; use the term that created the legend to get rid of it
+  guides(color = "none", alpha = "none")
+``` 
+
+
+#### Axes
+
+Control the axes with `scale_...` functions:
+
+```{r, tidy = FALSE}
+myplot + 
+geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+geom_point(aes(color = group)) +
+stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+# the specify the axis of interest and the variable type
+scale_y_continuous(name = "Mean optic nerve size, mm") + 
+# change the title
+guides(color = "none", alpha = "none") 
+``` 
+
+Add back the color legend only and change the labels of the color "axis":
+
+```{r, tidy = FALSE}
+myplot +
+geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+geom_point(aes(color = group)) +
+stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+scale_x_continuous(name = "Age, years") +
+scale_y_continuous(name = "Mean optic nerve size, mm") +     
+# the labels are part of the "scale" think of the color as a third axis
+scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+# change the title
+guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") 
+``` 
+
+#### Themes
+
+Make it "cleaner" for publications, etc:
+
+```{r, tidy = FALSE}
+myplot +
+geom_ribbon(data = onhfit, aes(x = age, ymax = upr95, ymin = lwr95, alpha = 0.01)) +
+geom_point(aes(color = group)) +
+stat_smooth(method = "lm", data = subset(onhlong, group == "0-No"), se = FALSE) +
+scale_x_continuous(name = "Age, years") +
+scale_y_continuous(name = "Mean optic nerve size, mm") +     
+scale_color_discrete(labels = c("Control", "Case, Non-ONH eye", "Case, ONH eye")) + 
+guides(color = guide_legend(aes(title = "Eye type")), alpha = "none") +
+# a very "clean" theme
+theme_bw()
+``` 
+
+
+#### Pure exploration
+
+Non-parametric smoother with 95% CI.  Big for the green band because
+it is uncertain due to a lack of data:
+
+```{r, tidy = FALSE}
+myplot + 
+    geom_point(aes(color = group)) + 
+    geom_smooth(aes(color = group, fill = group))
+``` 
+
+Separate plots but on same axis:
+
+```{r, tidy = FALSE}
+myplot + 
+    geom_point(aes(color = group)) + 
+    geom_smooth(aes(color = group, fill = group)) + 
+    facet_grid(~ group)
+```
+
+Explore and Extend
+------------------
+
+The `rop` dataset contains data on where three
+types of physicians (variable `type`) thought the macula position
+was (variables `x` and `y`) on 30
+photographs (variable `picture`).  
+
+```{r, }
+# library(devtools); install_github("advdatamgmt/adm")
+library(adm)
+head(rop)
+``` 
+
+Can you create the following picture?
+(It only uses commands and aesthetics above, you'll get some warnings
+because there are some missing data points --- you can safely ignore those):
+
+```{r, echo = FALSE, warning = FALSE}
+p <- ggplot(rop, aes(x, y, color = type)) + geom_point()
+p + facet_wrap(~ picture) + theme_bw()
+``` 
+
+Evaluate
+--------
+
+Modify the figure to display only the data from the retina physicians
+(`type = "ret"`) and add a regression line (even though it doesn't make much sense here)
+to each graph within your figure.
+
+```{r, opts.label = "hideall", warning = FALSE}
+p <- ggplot(subset(rop, type == "ret"), aes(x, y, color = type)) + 
+              geom_point() + stat_smooth(method="lm")
+p + facet_wrap(~ picture) + theme_bw()
+``` 
