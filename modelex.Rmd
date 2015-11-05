@@ -1,5 +1,5 @@
 ---
-title: "Simple Data Types"
+title: "Modeling Example"
 author: "Beau B. Bruce"
 output: 
   html_document:
