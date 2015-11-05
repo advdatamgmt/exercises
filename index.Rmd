@@ -24,3 +24,5 @@ params:
 1. [Apply Yourself](apply.html)
 1. [Table Example](tab_example.html)
 1. [Grammar of Graphics](ggplot.html)
+1. [Modeling](modeling.html)
+1. [Modeling Example](modelex.html)

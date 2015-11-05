@@ -1,0 +1,205 @@
+---
+title: "Modeling"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child='config/key_setup.Rmd'}
+```
+
+Exercise
+--------
+
+R comes with functions for ordinary linear regression (`lm`), 
+for generalized linear models (`glm`), and time-to-event models 
+(package `survival` - do not need to install - comes with R).  
+However, a more powerful package these common models is `rms`.
+You'll see some messages after your load the package.
+
+```{r, eval = 2, message=FALSE}
+install.packages("rms")
+library(rms)
+```
+
+We'll use data in the `adm` package:
+```{r}
+# library(devtools); install_github("advdatamgmt/adm")
+library(adm)
+```
+
+
+### Linear regression
+Let's start with a linear regression of the optic nerve head data using the
+"built-in" version:
+
+```{r}
+lm(mean ~ age, onhlong)
+```
+
+You don't get much back that way.  It turns out that R returns an object that
+has a lot of the useful data.  You can access many aspects of the model.  For 
+a quick summary start with `summary`:
+
+```{r}
+summary(lm(mean ~ age, onhlong))
+```
+
+That is you usual summary... it will get tedious to keep typing the model so
+save it in a variable:
+
+```{r}
+m <- lm(mean ~ age, onhlong)
+summary(m)
+# coefficients
+coef(m)
+# diagnostic plots
+plot(m)
+# influence measures
+influence.measures(m)
+```
+
+After you have loaded the `rms` package you can use the `ols` function. OLS
+is *ordinary least squares*:
+
+```{r, error = TRUE}
+m <- ols(mean ~ age, onhlong)
+m # no need for summary
+
+# you can make nice plots with rms, but first do the following to let
+# rms know the distribution of your dataset
+options(datadist = "dd")
+dd <- datadist(onhlong)
+
+# now you can plot the actual line
+plot(Predict(m, age))
+
+# and if you do summary you get your CIs and an effect size based on the
+# IQR of the different variables
+summary(m)
+
+# let's add in the case variable
+m2 <- ols(mean ~ age + case, onhlong)
+m2
+
+plot(Predict(m2, case))
+summary(m2)
+plot(m2, which = 1) # check the help for plot.lm
+which.influence(m2)
+```
+
+Sometimes `rms` will ask you to specify `x` or `y` in the fit.  Do it like this:
+```{r}
+m2 <- ols(mean ~ age + case, onhlong, x = TRUE)
+```
+
+It just saves extra info about the data which makes the model object bigger but
+doesn't change anything else:
+
+```{r}
+which.influence(m2)
+show.influence(which.influence(m2), onhlong)
+```
+
+If you want to specify interaction (R keeps things HWF) use the `*` for all the
+terms:
+```{r}
+(m3 <- ols(mean ~ age * case , onhlong))
+```
+
+Finally, one useful function for removing or adding terms as you model is 
+`update`.  The `.` means keep everything on that side and the `-` will take
+terms away while `+` would add:
+
+```{r}
+update(m2, . ~ . - age)
+update(m2, . ~ . - case)
+```
+
+You can also add additional valid arguements (like `x = TRUE`):
+```{r}
+which.influence(update(m3, x = TRUE))
+```
+
+### Logistic regression
+
+For logistic regression use `rms`'s `lrm` instead of `ols`.  
+```{r}
+(m <- lrm(case ~ age, onhlong))
+plot(Predict(m, age)) # remember that the model forces the log-odds to be linear
+summary(m)
+summary(m, age = c(4,5))
+```
+
+### Time-to-event
+
+For time-to-event you can use the built-in functions from the `survival` package.
+
+```{r}
+library(survival)
+
+# the Surv specifies the follow-up time and the 
+# status of the subject; survfit is K-M
+survfit(Surv(futime, fustat) ~ rx, data = ovarian)
+survdiff(Surv(futime, fustat) ~ rx, data = ovarian)
+
+# stratify us strata in the survival package
+survdiff(Surv(time, status) ~ pat.karno + strata(inst), data=lung)
+
+# plot it
+plot(survfit(Surv(futime, fustat) ~ rx, data = ovarian))
+
+# Cox model
+(m <- coxph(Surv(futime, fustat) ~ rx + age, data = ovarian))
+summary(m)
+# plot(m) - doesn't work
+```
+
+With the `rms` package:
+```{r}
+# Cox model
+## only need once per session and we did above
+# options(datadist = "dd")
+dd <- datadist(ovarian)
+(m <- cph(Surv(futime, fustat) ~ rx + age, data = ovarian))
+# need x and y
+m <- update(m, x = TRUE, y = TRUE)
+survplot(m, rx)
+survplot(m, age)
+```
+
+#### Extra `rms` functions
+
+More powerful than summary:
+```{r}
+describe(ovarian)
+```
+
+Really awesome for univariate analysis:
+```{r}
+summary(rx ~ age + futime + fustat, ovarian, method = "reverse", test = TRUE)
+```
+
+Read more about the function above in the help for `summary.formula`.
+
+
+Explore and Extend
+------------------
+
+Look at the `edfun` dataset in the `adm` package.  It has four variables 
+representing four presenting complaints (headache, neurologic, vision, and 
+elevated blood pressure), phase of the study (1 or 2), sex, race, age,
+body mass index, and mean arterial pressure (MAP).  Is there a linear relationship
+between higher MAP and older age?
+
+```{r, opts.label = "hideall", warning = FALSE}
+summary(lm(map ~ age, edfun))
+``` 
+
+

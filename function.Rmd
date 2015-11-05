@@ -275,17 +275,16 @@ function `select_column`.
 select_column <- function(name, df) { df[, name] }
 ```
 
-4. The `length` function gives you the length of vector and `sum` adds a numeric vector together.  Write a function called `mean` that takes a vector (of arbitrary length) as input and calculates the average of the numbers in that vector using
-the `length` and `sum` functions.
+4. The `length` function gives you the length of vector and `sum` adds a numeric vector together.  Write a function called `mymean` that takes a vector (of arbitrary length) as input and calculates the average of the numbers in that vector using the `length` and `sum` functions.
 ```{r, opts.label='hideall'}
-mean <- function(x) { sum(x) / length(x) }
+mymean <- function(x) { sum(x) / length(x) }
 ```
 
-5. Using your `mean` function write a function that calculates the variance called 
-`var`.  Remember variance is the sum ($\sum$)
+5. Using your `mymean` function write a function that calculates the variance called 
+`myvar`.  Remember variance is the sum ($\sum$)
 of the squares of values after you subtract the mean ($\bar x$) of all the values ($x_i$) from each divide by the length ($n$)
 minus 1.
 $$ var = {{\sum(x_i - \bar x)^2}\over{n-1}}$$
 ```{r, opts.label='hideall'}
-var <- function(x) { sum((x - mean(x))^2) / (length(x) - 1) }
+myvar <- function(x) { sum((x - mymean(x))^2) / (length(x) - 1) }
 ```

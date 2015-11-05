@@ -1,0 +1,178 @@
+---
+title: "Simple Data Types"
+author: "Beau B. Bruce"
+output: 
+  html_document:
+      theme: readable
+      highlight: tango
+      css: config/styles.css
+output_dir: html
+params:
+  key: TRUE
+---
+
+```{r key setup, child = 'config/key_setup.Rmd'}
+```
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width=80)
+```
+
+## Step 1. Variable Specification
+
+I'm going to "skip" this step because you can trust all the data is
+clean in this case and I want to get down to business.  I'm going to
+develop a model with the outcome of interest being
+whether the patient was examined by the ED physician or not and the
+primary exposure of interest being the patients presenting complaint/condition.
+The presenting complaint/conditions are coded as four indicator
+variables because patients, as you know, can have more than one
+complaint/condition: headache, neurological deficit, vision complaint , or diastolic blood pressure >120 mmHg.  The other variables of
+interest (i.e., potential confounders and interacting variables)
+are the examination method available (which depended on the
+phase of the study), sex, race, age, body mass index, and mean arterial pressure.
+
+## Step 2. Model Specification
+
+The outcome is dichotomous so I'll use a logistic regression. In R, I
+usually use the `rms` library.  The data is found in the `adm` package.
+
+```{r}
+library(rms)
+library(adm)
+head(edfun)
+``` 
+
+Is there any missing data in the variables we care about?  
+
+```{r}
+all(complete.cases(edfun))
+```
+
+No; so with that out of the way, let's now look for non-linearity:
+
+```{r}
+(m <- lrm(examined ~ cc.ha + cc.neuro + cc.vision + cc.bp + phase + sex + 
+            race.black + rcs(age, 5) + rcs(bmi, 5) + rcs(map, 5), edfun))
+anova(m)
+``` 
+
+Note that age is close to being non-linear and that the "total"
+nonlinearity is also nearly significant.  I'm going to choose to get
+rid of the non-linear term in this model to keep it "simple."  You
+could choose to be extra careful about confounding control and keep
+age as non-linear for now. 
+
+Next, collinearity:
+
+```{r}
+library(perturb) # helps print with colldiag.alt - install if don't have
+(m <- lrm(examined ~ cc.ha + cc.neuro + cc.vision + cc.bp + 
+            phase + sex + race.black + age + bmi + map, edfun))
+colldiag.alt(m)
+``` 
+
+Only mean arterial pressure and the intercept appear collinear so we
+will proceed.
+
+## Step 3. Interaction assessment
+
+```{r}
+(m <- lrm(examined ~ (cc.ha + cc.neuro + cc.vision + cc.bp) * (phase + sex + 
+                                        race.black + age + bmi + map), edfun))
+anova(m)
+``` 
+
+There are a couple of significant second order terms race and vision complaint
+and sex and neuro complaint.  Make sure there is no evidence of
+additional interaction if we reduce the model to just keep those two terms:
+
+```{r}
+(m2 <- lrm(examined ~ cc.ha + cc.neuro + cc.vision + cc.bp + phase + 
+             sex + race.black + age + bmi + map + race.black * cc.vision + 
+             sex * cc.neuro, edfun))
+# non-significant likelihood ratio test 
+# between the two models so ok to reduce
+lrtest(m, m2)  
+# even though the two terms are non-sig at 0.05 they are at 0.1, 
+# and in addition total interaction is significant at 0.05 level now
+anova(m2) 
+``` 
+
+## Step 4. Confounding assessment
+
+Now compare the adjusted ORs for the complaints (but we have to deal
+with the interactions too in this case because they effect the
+exposures of interest) with the model where age, BMI, and MAP are
+removed.  Kept phase because it is such an important variable.
+
+```{r}
+(m3 <- lrm(examined ~ cc.ha + cc.neuro + cc.vision + cc.bp + phase + 
+             sex + race.black + race.black * cc.vision + sex * cc.neuro, edfun))
+``` 
+
+You can eyeball that the only one that is an issue is the DBP >
+120 condition.  Nothing else will be confounded if we get rid age, 
+BMI, and MAP.  So, now, I'm going to look just at the DBP > 120
+coefficient for all subsets of age, BMI, and MAP:
+
+```{r}
+# create all subsets of age, bmi, map
+# combn(list, n) creates the permutations on the rows
+# when we use sapply we get to supply a different number to the function for 
+# 1, 2, or 3 of the variables simultaneously
+(vargroups <- sapply(1:3, function(x) combn(Cs(age, bmi, map), x)))
+# next I need to run each list element through a function 
+# that will create the right model based on the rows of 
+# each list element; paste them together with collapse = ' + '
+(formulas <- lapply(vargroups, function(m) apply(m, 2, function(x) paste(x, collapse = ' + '))))
+# now make them a single vector of formulas
+(formulas <- do.call(c, formulas))
+# paste the remainder of the formula using paste with sep = ' + ' 
+# (collapse would have made one really long formula)
+# rather than 7 single formulas
+baseform <- "examined ~ cc.ha + cc.neuro + cc.vision + cc.bp + cc.vision * race.black + cc.neuro * sex + phase"
+(formulas <- paste(baseform, formulas, sep = ' + '))
+# and don't forget the baseform is a formula too!
+(formulas <- c(baseform, formulas))
+# now run lrm on each of these formulas
+(models <- lapply(formulas, function(form) lrm(as.formula(form), edfun)))
+# no need to look at each of them; just pull out the exp of the cc.bp coef
+(ors <- sapply(models, function(x) exp(coef(x)['cc.bp=Yes'])))
+# match with the formulas
+cbind(formulas, ors)
+``` 
+
+Note the simplest model that fully controls for confounding is the 3rd from
+the bottom which requires keeping age and MAP.  So, let's plan to drop
+BMI.
+
+## Step 5. Precision
+
+```{r}
+# new function that makes it much easier to create new models:
+# . means what was there before
+(m4 <- update(m2, . ~ . - bmi))
+``` 
+
+Look at all the coefficients for the complaints and conditions.  They
+are generally a little smaller.  No need to keep age and BMI for political
+reasons so we have the final model (m4).
+
+## Step 6. Recheck assumptions and GOF
+
+It's all good:
+
+```{r, error=TRUE}
+# no nonlinearity at 0.05
+anova(update(m4, . ~ . - age + rcs(age, 5) - map + rcs(map, 5)))
+# no collinearity (only intercept and map - safe to ignore)
+colldiag.alt(m4)
+# model has no evidence of lack of fit
+residuals(m4, "gof") # need to put x = TRUE, y = TRUE in fit for this to work (see error)
+residuals(update(m4, . ~ ., x = TRUE, y = TRUE), "gof")
+``` 
+
+## Step 7. Report
+
+Create tables...
