@@ -132,7 +132,7 @@ carry something useful from one project to another in a useful way.
 A major principle of programming is DRY which stands for "Don't Repeat Yourself".  I might cut and paste
 something twice but by the 3rd paste unless I'm seriously not going to do it again and it is a 
 *very* short (one line) piece of code, I am going to be trying to make a function out of it.  This
-rule of not using the same code more than three times is also know as the "rule of three" in
+rule of not using the same code more than three times is also known as the "rule of three" in
 computer programming.
 
 So how to write a function?  Name it (via assignment with `<-`), use the keyword `function` followed
@@ -166,7 +166,7 @@ add2sub5(10)  # inside makes x == 12
 x             # once it returns x is still 10
 ```
 
-However, if you use a **uninitialized** variable within you function R can use the one from the
+However, if you use a **uninitialized** variable within your function R can use the one from the
 environment:
 
 ```{r}
@@ -239,7 +239,7 @@ may recall are called roots are given by the following
 formula that you've probably not seen since high school:
 $$ {-b \pm \sqrt{b^2 - 4ac}}\over{2a} $$
 You can compute the square root with `sqrt()`.  R only returns the last object... how can
-you return "two" things at once?  (Hint: use something you already know.)
+you return "two" things at once?  (Hint: use one of the data types you already know.)
 
 + Try to write a function that returns a function.  Here is a suggestion.  Write a function that
 takes a single number as an argument and returns a function that adds that number to its argument.
@@ -259,7 +259,7 @@ add10(6)
 Evaluate
 --------
 
-1. Look at the `gl` function.  Give a working example where you use the arguments out of order.
+1. Look at the `gl` function.  Give a working example where you use the `n`, `k`, and `length` arguments out of the usual order.
 ```{r, opts.label='hideall'}
 gl(length = 20, k = 1, n = 2)
 ```
@@ -269,8 +269,9 @@ gl(length = 20, k = 1, n = 2)
 cube <- function(x) { x^3 }
 ```
 
-3. Write a function that takes a character name and a data.frame and returns that column from a data.frame. Call the
-function `select_column`.
+3. Write a function that takes a `character` name of one of the columns in a `data.frame` and a `data.frame` and returns that column from a `data.frame`. Call the
+function `select_column`. (You don't really need a function for this, so don't
+over think it, but it is good practice.)
 ```{r, opts.label='hideall'}
 select_column <- function(name, df) { df[, name] }
 ```

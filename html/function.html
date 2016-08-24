@@ -123,7 +123,7 @@ img {
 ##     class(f) &lt;- c(if (ordered) &quot;ordered&quot;, &quot;factor&quot;)
 ##     f
 ## }
-## &lt;bytecode: 0x7fa9232b3580&gt;
+## &lt;bytecode: 0x7fc58990eaa0&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>There is a lot going on here, but look at the general structure. The word <code>function</code> followed by the mouth enclosed in parentheses <code>()</code> telling you some details about the foods this creature eats. Next, you see a section enclosed in curly brackets <code>{}</code>: that’s the body. What is inside? R code! Basically, inside the body of a function is a recipe of R code that can be reused to repeat a useful action.</p>
 <p>If you thought <code>c</code> was odd, there are even functions that do not show their mouth without some coaxing. Can you think of one? What is an “action” you have taken on data that did not need parentheses? Think about for a moment before continuing.</p>
@@ -169,7 +169,7 @@ factor(labels = c(&quot;M&quot;, &quot;F&quot;), x = a)  # out of order</code></
 <li>If you cut-and-paste and realize you need to change something you have to do it everywhere and not make any mistakes, with a function you do it in one place: the function.</li>
 <li>You will likely find your functions are useful in your next project and a function is a good way to carry something useful from one project to another in a useful way.</li>
 </ul>
-<p>A major principle of programming is DRY which stands for “Don’t Repeat Yourself”. I might cut and paste something twice but by the 3rd paste unless I’m seriously not going to do it again and it is a <em>very</em> short (one line) piece of code, I am going to be trying to make a function out of it. This rule of not using the same code more than three times is also know as the “rule of three” in computer programming.</p>
+<p>A major principle of programming is DRY which stands for “Don’t Repeat Yourself”. I might cut and paste something twice but by the 3rd paste unless I’m seriously not going to do it again and it is a <em>very</em> short (one line) piece of code, I am going to be trying to make a function out of it. This rule of not using the same code more than three times is also known as the “rule of three” in computer programming.</p>
 <p>So how to write a function? Name it (via assignment with <code>&lt;-</code>), use the keyword <code>function</code> followed by the mouth with a list of arguments. Then, write the R code as the body. Use it just like any other R function. Use the name you chose for the argument in the function to work on the data. Examples:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">add2 &lt;-<span class="st"> </span>function(x) { x +<span class="st"> </span><span class="dv">2</span> }
 <span class="kw">add2</span>(<span class="dv">2</span>)</code></pre></div>
@@ -188,7 +188,7 @@ factor(labels = c(&quot;M&quot;, &quot;F&quot;), x = a)  # out of order</code></
 <pre><code>## [1] 7</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x             <span class="co"># once it returns x is still 10</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<p>However, if you use a <strong>uninitialized</strong> variable within you function R can use the one from the environment:</p>
+<p>However, if you use a <strong>uninitialized</strong> variable within your function R can use the one from the environment:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="dv">10</span>
 addysub5 &lt;-<span class="st"> </span>function(x) {
   x &lt;-<span class="st"> </span>x +<span class="st"> </span>y
@@ -237,7 +237,7 @@ addysub5 &lt;-<span class="st"> </span>function(x) {
 <li><p>Add two numbers together using the “mouth” of the <code>+</code> function.</p></li>
 <li><p>Write a function called <code>add5</code> that adds five to a single number.</p></li>
 <li><p>Write a function that takes two arguments a <code>vector</code> and a single number and returns the element of the vector corresponding to that number. Call it <code>pick_n</code>.</p></li>
-<li><p>Write a function that computes the two values that solve<br />a quadratic equation of the form, <span class="math">\(ax^2 + bx + c = 0\)</span>. The values as you may recall are called roots are given by the following formula that you’ve probably not seen since high school: <span class="math">\[ {-b \pm \sqrt{b^2 - 4ac}}\over{2a} \]</span> You can compute the square root with <code>sqrt()</code>. R only returns the last object… how can you return “two” things at once? (Hint: use something you already know.)</p></li>
+<li><p>Write a function that computes the two values that solve<br />a quadratic equation of the form, <span class="math">\(ax^2 + bx + c = 0\)</span>. The values as you may recall are called roots are given by the following formula that you’ve probably not seen since high school: <span class="math">\[ {-b \pm \sqrt{b^2 - 4ac}}\over{2a} \]</span> You can compute the square root with <code>sqrt()</code>. R only returns the last object… how can you return “two” things at once? (Hint: use one of the data types you already know.)</p></li>
 <li><p>Try to write a function that returns a function. Here is a suggestion. Write a function that takes a single number as an argument and returns a function that adds that number to its argument. Remember you can save the output of a function like anything else. So, your function, if it were called <code>add_factory</code>, would work like this:</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">add6 &lt;-<span class="st"> </span><span class="kw">add_factory</span>(<span class="dv">6</span>)
@@ -250,9 +250,9 @@ addysub5 &lt;-<span class="st"> </span>function(x) {
 <div id="evaluate" class="section level2">
 <h2>Evaluate</h2>
 <ol style="list-style-type: decimal">
-<li><p>Look at the <code>gl</code> function. Give a working example where you use the arguments out of order.</p></li>
+<li><p>Look at the <code>gl</code> function. Give a working example where you use the <code>n</code>, <code>k</code>, and <code>length</code> arguments out of the usual order.</p></li>
 <li><p>Write a function that <a href="https://en.wikipedia.org/wiki/Cube_%28algebra%29">cubes</a> numbers. Call it <code>cube</code>.</p></li>
-<li><p>Write a function that takes a character name and a data.frame and returns that column from a data.frame. Call the function <code>select_column</code>.</p></li>
+<li><p>Write a function that takes a <code>character</code> name of one of the columns in a <code>data.frame</code> and a <code>data.frame</code> and returns that column from a <code>data.frame</code>. Call the function <code>select_column</code>. (You don’t really need a function for this, so don’t over think it, but it is good practice.)</p></li>
 <li><p>The <code>length</code> function gives you the length of vector and <code>sum</code> adds a numeric vector together. Write a function called <code>mymean</code> that takes a vector (of arbitrary length) as input and calculates the average of the numbers in that vector using the <code>length</code> and <code>sum</code> functions.</p></li>
 <li><p>Using your <code>mymean</code> function write a function that calculates the variance called <code>myvar</code>. Remember variance is the sum (<span class="math">\(\sum\)</span>) of the squares of values after you subtract the mean (<span class="math">\(\bar x\)</span>) of all the values (<span class="math">\(x_i\)</span>) from each divide by the length (<span class="math">\(n\)</span>) minus 1. <span class="math">\[ var = {{\sum(x_i - \bar x)^2}\over{n-1}}\]</span></p></li>
 </ol>
