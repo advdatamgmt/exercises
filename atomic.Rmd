@@ -69,12 +69,12 @@ Explore and Extend
 
 + Which of the **atomic** data types is the answer you get when you divide another number by zero?  Does that surprise you?
 
-+ What does `is.character(2)` evaluate to?  How can you still use `is.character` and `2` get `TRUE` instead?
++ What does `is.character(2)` evaluate to?  How can you still use `is.character` and `2` together, but get `TRUE` instead?
 
 + What happens when you type `"John said, "How are you today?""` in the R console?  Think about this.  Why do you think this happens?  Propose a solution.
 
 + Useful **operators** for the `logical` data type include `&`, `|`, and `!`.  They are called the **logical operators**.  The `|` is often called a **pipe** character.  You'll usually find it above the backslash
-(i.e., \) on your keyboard.  Make a table for all possible values of `TRUE` and `FALSE`.  (Hint: only two for `!`, but four possibilities for `&` and `|`.)  What would you
+(i.e., `\`) on your keyboard.  Make a table for all possible values of `TRUE` and `FALSE`.  (Hint: only two for `!`, but four possibilities for `&` and `|`.)  What would you
 propose as names for these?
 
 ```{r}
@@ -104,7 +104,7 @@ an expression using each **atomic** data type and each **relational operator** i
 
 Evaluate
 --------
-Complete the following exercises in R and turn in your code in an .R file.  Like before, name your code file atomic_<yourlastname>.R and if some 
+Complete the following exercises in R and turn in your code in an .R file.  Like before, name your code file atomic_\<yourlastname\>.R and if some 
 part of the response is not an executable by R without an error use a comment.
 
 1. How many **arguments** does a **binary operator** take?  Give an example.
@@ -132,7 +132,7 @@ is.character('I'm fine')
 is.character("I'm fine")
 ```
 
-5. Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
+5. (optional: challenging) Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
 **logical operators** (`!`, `&`, `|`), 
 and **relational operators** (`<`, `>`, `<=`, `>=`, `==`, `!=`) 
 by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 6 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:

@@ -107,7 +107,7 @@ In a couple of weeks we will learn a better way to combine code and the answers,
 ```{r, opts.label='hideall'}
 2 ^ 3
 # ^ is the exponentiation operator; it multiplies (*) the first number by 
-# itself the number oftimes given by the secord number
+# itself the number of times given by the secord number
 # so 2 ^ 3 is 2 raised to the third power or 2 * 2 * 2
 ```
 

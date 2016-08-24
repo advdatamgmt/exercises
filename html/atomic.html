@@ -125,9 +125,9 @@ img {
 <h2>Explore and Extend</h2>
 <ul>
 <li><p>Which of the <strong>atomic</strong> data types is the answer you get when you divide another number by zero? Does that surprise you?</p></li>
-<li><p>What does <code>is.character(2)</code> evaluate to? How can you still use <code>is.character</code> and <code>2</code> get <code>TRUE</code> instead?</p></li>
+<li><p>What does <code>is.character(2)</code> evaluate to? How can you still use <code>is.character</code> and <code>2</code> together, but get <code>TRUE</code> instead?</p></li>
 <li><p>What happens when you type <code>&quot;John said, &quot;How are you today?&quot;&quot;</code> in the R console? Think about this. Why do you think this happens? Propose a solution.</p></li>
-<li><p>Useful <strong>operators</strong> for the <code>logical</code> data type include <code>&amp;</code>, <code>|</code>, and <code>!</code>. They are called the <strong>logical operators</strong>. The <code>|</code> is often called a <strong>pipe</strong> character. You’ll usually find it above the backslash (i.e., ) on your keyboard. Make a table for all possible values of <code>TRUE</code> and <code>FALSE</code>. (Hint: only two for <code>!</code>, but four possibilities for <code>&amp;</code> and <code>|</code>.) What would you propose as names for these?</p></li>
+<li><p>Useful <strong>operators</strong> for the <code>logical</code> data type include <code>&amp;</code>, <code>|</code>, and <code>!</code>. They are called the <strong>logical operators</strong>. The <code>|</code> is often called a <strong>pipe</strong> character. You’ll usually find it above the backslash (i.e., <code>\</code>) on your keyboard. Make a table for all possible values of <code>TRUE</code> and <code>FALSE</code>. (Hint: only two for <code>!</code>, but four possibilities for <code>&amp;</code> and <code>|</code>.) What would you propose as names for these?</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">!<span class="ot">TRUE</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
@@ -291,7 +291,7 @@ Evaluates to:
 </div>
 <div id="evaluate" class="section level2">
 <h2>Evaluate</h2>
-<p>Complete the following exercises in R and turn in your code in an .R file. Like before, name your code file atomic_<yourlastname>.R and if some part of the response is not an executable by R without an error use a comment.</p>
+<p>Complete the following exercises in R and turn in your code in an .R file. Like before, name your code file atomic_&lt;yourlastname&gt;.R and if some part of the response is not an executable by R without an error use a comment.</p>
 <ol style="list-style-type: decimal">
 <li><p>How many <strong>arguments</strong> does a <strong>binary operator</strong> take? Give an example.</p></li>
 <li><p>Fix the following code so it does not generate an error. Why does R generate an error?</p></li>
@@ -306,7 +306,7 @@ Evaluates to:
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.character</span>(<span class="st">'I'</span>m fine<span class="st">')</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
-<li>Remember <strong>presidence</strong> from the <a href="rithmatic.html#presidence">Rithmatic</a> exercise? Do you need the parentheses above? Write out the presidence for the <strong>arithmetic operators</strong> (<code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>), <strong>logical operators</strong> (<code>!</code>, <code>&amp;</code>, <code>|</code>), and <strong>relational operators</strong> (<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>) by writing each group with equal <strong>presidence</strong> on a single line and writing <strong>operators</strong> with higher presidence on a higher line. (Hint: your “table” should have 6 lines and all the <strong>relational operators</strong> will be on the same line.) For example, as you know for the <strong>arthimetic operators</strong>, the “table” would look like this, with two lines:</li>
+<li>(optional: challenging) Remember <strong>presidence</strong> from the <a href="rithmatic.html#presidence">Rithmatic</a> exercise? Do you need the parentheses above? Write out the presidence for the <strong>arithmetic operators</strong> (<code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>), <strong>logical operators</strong> (<code>!</code>, <code>&amp;</code>, <code>|</code>), and <strong>relational operators</strong> (<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>) by writing each group with equal <strong>presidence</strong> on a single line and writing <strong>operators</strong> with higher presidence on a higher line. (Hint: your “table” should have 6 lines and all the <strong>relational operators</strong> will be on the same line.) For example, as you know for the <strong>arthimetic operators</strong>, the “table” would look like this, with two lines:</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># * /</span>
 <span class="co"># + -</span></code></pre></div>

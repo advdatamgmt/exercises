@@ -180,7 +180,8 @@ what you were expecting it to do. A `warning` does not rise to the level of an `
 Explore and Extend
 ------------------
 
-+ Make a really long `vector` by typing this: `1:100`.  Now that you know how to extract elements from a `vector`, explain why R has been printing `[1]` at the beginning of the output all this time.
++ Make a really long `vector` by typing this: `5:123`.  Now that you know how to extract elements from a `vector`, explain why R has been printing `[1]` at the beginning of the output all this time and why R is now printing other numbers between
+the square brackets (`[ ]`).
 
 + Try and assign something to the **reserved** word `TRUE`.  What is the error?  Can you make sense of it?
 
@@ -189,7 +190,7 @@ Explore and Extend
 + Is a `factor` a `vector`?  Justify your answer.
 
 + Remember that I said that a vector can only be made from the same atomic type?  Try the following (and additional similar examples)
-and try to understand what is going on.  What is R doing?  Why does this always work?
+and try to understand what is going on.  What is R doing?  Why does this always "work"?
 ```{r}
 c(TRUE, 0, FALSE, 3)
 c("a", 3, TRUE)
@@ -211,13 +212,13 @@ library(adm)
 install.packages("devtools")                  # you only need to do this one time
 devtools::install_github("advdatamgmt/adm")   # this too, but I may update as course goes along
 library(adm)                                  # this you need every time you use the package 'adm'
-rm(list = ls())                               # this will make sure your working environment is clean
+rm(list = ls())                               # this will make clean your working area
                                               # so no naming conflicts arise
 ```
 
 1. Is `2dogs` a valid name in R?  Why or why not?
 
-2. What is the sum of the 11th and 82nd element of `x`?
+2. What is the sum of the 11th and 82nd element of `x` after you've completed the steps above?
 ```{r, opts.label='hideall'}
 x[11] + x[82]
 ```
@@ -237,5 +238,5 @@ z[62]
 
 5. How many letter c's are in `z`?
 ```{r, opts.label='hideall'}
-summary(factor(z))[3]   # did you know the oupput is a vector? is.vector()?
+summary(factor(z))[3]   # did you know the output is a vector? is.vector()?
 ```

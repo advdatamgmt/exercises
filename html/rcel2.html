@@ -86,7 +86,7 @@ img {
 </div>
 <div id="lists" class="section level2">
 <h2>Lists</h2>
-<p>A <code>list</code> allows you to mix ‘n’ match atomic data types. You bulid a list with the function <code>list()</code></p>
+<p>A <code>list</code> allows you to mix ‘n’ match atomic data types. You bulid a list with the function <code>list()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">2</span>, <span class="ot">TRUE</span>)
 <span class="kw">is.character</span>(l[[<span class="dv">1</span>]])  <span class="co"># see the subtle difference between l (&quot;ell&quot;) and 1 (&quot;one&quot;)?</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -134,7 +134,7 @@ x</code></pre></div>
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data frames</h2>
-<p>A <code>data.frame</code> is a specialized <code>list</code> where all the elements of the <code>list</code> have equal length. It is perfect for represening data where there are several values (in columns) per observation (in rows). You create a <code>data.frame</code> with the <code>data.frame()</code> function:</p>
+<p>A <code>data.frame</code> is a specialized <code>list</code> where all the elements of the <code>list</code> have equal length. It is perfect for representing data where there are several values (in columns) per observation (in rows). You create a <code>data.frame</code> with the <code>data.frame()</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>), 
                  <span class="dt">sex =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;m&quot;</span>, <span class="st">&quot;f&quot;</span>)), 
                  <span class="dt">sorethroat =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;yes&quot;</span>)))
@@ -198,9 +198,9 @@ df</code></pre></div>
 <div id="explore-and-extend" class="section level2">
 <h2>Explore and Extend</h2>
 <ul>
-<li><p>Demostrate two ways to extract the numeric element <code>2</code> from the second element of <code>l2</code> above. (Hint: combine the syntax from this exercise with that of the last one.)</p></li>
+<li><p>Demostrate two ways to extract the numeric element <code>2</code> from the second element of <code>l2</code> above. (Hint: combine the syntax from this exercise with that of the last one and don’t forget to look for the subtle difference between l (“ell”) and 1 (“one”) which I’m doing to keep you on your toes - that’s not <code>12</code> but <code>l2</code>).</p></li>
 <li><p>What data type is <code>l2[1]</code> vs. <code>l2[[1]]</code> vs. <code>l2$a</code>? What happens when you do <code>l2[c(1,2)]</code> vs. <code>l2[[c(1,2)]]</code>? (Notice the difference between this and how we reference rows and columns of a <code>data.frame</code>.) You know that you can extract elements from a <code>vector</code> using <code>[]</code>. So now, can you extract a numeric vector equivalent to <code>c(3,4)</code> from <code>l2</code> by generalizing the ideas from this question and the last one?</p></li>
-<li><p>Demostrate two ways to reassign the second element of <code>l2</code> to a value of <code>900</code>. Notice the difference between <code>O</code> (“oh”) and <code>0</code> (“zero”).</p></li>
+<li><p>Demostrate two ways to reassign the second element of <code>l2</code> to a value of <code>900</code>. Notice that there is also a difference between <code>O</code> (“oh”) and <code>0</code> (“zero”).</p></li>
 <li><p>Prove that a <code>data.frame</code> is a <code>list</code>. Prove that an arbitrary <code>list</code> like <code>l2</code> is not a <code>data.frame</code> (guess what the function is to test if something is a <code>data.frame</code>).</p></li>
 <li><p>In <code>df</code>, replace the 5th observation’s sex with <code>&quot;f&quot;</code>. Now, try to replace the 5th observation’s sore throat with <code>&quot;maybe&quot;</code>. Can you make sense of the error message? Can you create a solution such that at the end <code>df</code> still contains a factor called <code>sorethroat</code> with the help of the function <code>as.character</code>? (By the way, there are <code>as.</code> versions of all the types we’ve studied.) It is used like this:</p></li>
 </ul>

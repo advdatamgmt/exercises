@@ -23,7 +23,7 @@ types as elements simultaneously: `list`.  A specialized `list` called `data.fra
 will allow us to operate on our datasets as spreadsheet-like objects.
 
 ## Lists
-A `list` allows you to mix 'n' match atomic data types.  You bulid a list with the function `list()`
+A `list` allows you to mix 'n' match atomic data types.  You bulid a list with the function `list()`.  
 
 ```{r}
 l <- list("A", 2, TRUE)
@@ -64,7 +64,7 @@ You can also assign to parts of a `list` using the list syntax (see Explore and 
 ## Data frames
 
 A `data.frame` is a specialized `list` where all the elements of the `list` have equal length.  It is perfect for
-represening data where there are several values (in columns) per observation (in rows).  You create a `data.frame` with the `data.frame()` function:
+representing data where there are several values (in columns) per observation (in rows).  You create a `data.frame` with the `data.frame()` function:
 
 ```{r}
 df <- data.frame(age = c(3, 2, 3, 3, 1, 2, 4, 4), 
@@ -119,15 +119,16 @@ Explore and Extend
 ------------------
 
 + Demostrate two ways to extract the numeric element `2` from the second element of `l2` above. (Hint: combine the
-syntax from this exercise with that of the last one.)
+syntax from this exercise with that of the last one and don't forget to look for
+ the subtle difference between l ("ell") and 1 ("one") which I'm doing to keep 
+ you on your toes - that's not `12` but `l2`).
 
 + What data type is `l2[1]` vs. `l2[[1]]` vs. `l2$a`?  What happens when you do `l2[c(1,2)]` vs. `l2[[c(1,2)]]`?  (Notice the
 difference between this and how we reference rows and columns of a `data.frame`.) You know that you can extract
 elements from a `vector` using `[]`. So now, can you extract a numeric vector equivalent to `c(3,4)` from `l2` by generalizing the
 ideas from this question and the last one?
 
-+ Demostrate two ways to reassign the second element of `l2` to a value of `900`. Notice the difference
-between `O` ("oh") and `0` ("zero").
++ Demostrate two ways to reassign the second element of `l2` to a value of `900`. Notice that there is also a difference between `O` ("oh") and `0` ("zero").
 
 + Prove that a `data.frame` is a `list`.  Prove that an arbitrary `list` like `l2` is not a `data.frame` (guess what the function is to test if
 something is a `data.frame`).  
