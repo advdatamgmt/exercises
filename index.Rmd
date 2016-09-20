@@ -17,13 +17,11 @@ params:
 1. [Rcel, part 1](rcel1.html) 
 1. [Rcel, part 2](rcel2.html) 
 1. [Functions](function.html) 
-
---------------------------
-
-### Not yet revised
 1. [Branching Out / Feeling Loopy](branchloop.html)  
 1. [Getting Data In & Out of R](inout.html)
 1. [Base Graphics](basegraph.html) 
+--------------------------
+### Not yet revised
 1. [Food Prep (Slice, Dice, Concatenate, Merge)](foodprep.html) 
 1. [Delicacies (Missing, Text Data, and Dates)](delicacies.html) 
 1. [Apply Yourself](apply.html) 

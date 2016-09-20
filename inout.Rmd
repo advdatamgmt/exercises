@@ -20,30 +20,26 @@ Prepare
 This is not a typical module.  There is only a brief tutorial on getting datasets in and out of R as well as some
 file system related commands.
 
-Before you start, make sure you have the most up-to-date version of the `adm` package.
-
-```{r, eval = FALSE}
-library(devtools) # if you get an error did you install back in the earlier exercise?
-install_github("advdatamgmt/adm")
-```
-
 Excel files
 -----------
 
-Next, install the package `xlsx` which allows you to read Excel files:
+Next, install the package `readxl` which allows you to read Excel files:
 
 ```{r, eval = FALSE}
-install.packages('xlsx')  # only need to do this once per installed version of R
+install.packages('readxl')  # only need to do this once per installed version of R
 ```
 
 To read an Excel file into R you load the `xlsx` library once and use the `read.xlsx` function. 
 ```{r}
-library(xlsx)  # only once per session
+library(readxl)  # only once per session
 ```
 
  Because I've saved the files we are going to
 use in the `adm` package you need to ask R where the package directory is (your answer will be different 
-depending on your operating system and what version of R you are running, etc.)
+depending on your operating system and what version of R you are running, etc.).  These steps are
+ unique for accessing a raw data file contained in a package.  You will NOT
+ generally do this, but it is a convenient way to distribute the file to you.  
+ Once you discover where the file is however, the rest of the steps are the same.
 ```{r}
 system.file(package = "adm")
 ```
@@ -56,20 +52,20 @@ system.file("extdata/esoph.xlsx", package = "adm")
 
 With our filename in hand, we can now call the `read.xlsx` function.  The `1` tells it to pull out the first sheet of the file:
 ```{r}
-read.xlsx(system.file("extdata/esoph.xlsx", package = "adm"), 1)
+read_excel(system.file("extdata/esoph.xlsx", package = "adm"), 1)
 ```
 
 Hopefully, it looks familiar.  Of course you can save it for later:
 ```{r}
-xesoph <- read.xlsx(system.file("extdata/esoph.xlsx", package = "adm"), 1)
+xesoph <- read_excel(system.file("extdata/esoph.xlsx", package = "adm"), 1)
 ```
 
-When you plan to do additional manipulation to the `data.frame`, I recommend you call with `stringsAsFactors = FALSE` and convert any `factor`
-at the end.  We will soon learn ways to make this happen nearly automatically.
-
-```{r}
-xesoph <- read.xlsx(system.file("extdata/esoph.xlsx", package = "adm"), 1, stringsAsFactors = FALSE)
-```
+`read_excel` automatically reads in the `data.frame` as though you called `data.frame` with
+`stringsAsFactors = FALSE`.  In general this is the best way to import
+any data due to the problems you have seen when you start with `factor`
+and want to do additional data manipulations.  
+We will soon learn ways to convert variables to factors
+ nearly automatically anyway.
 
 Comma Delimited Text Files
 --------------------------
@@ -102,18 +98,17 @@ figure out where the file is.
 
 For example, if you had a file called "iih.xlsx" in your working directory you would read it in like this:
 ```{r, eval = FALSE}
-read.xlsx("iih.xlsx", 1, stringsAsFactors = FALSE)
+read_excel("iih.xlsx", 1, stringsAsFactors = FALSE)
 ```
 
 Likewise, if you write anything out, it will be in the working directory unless you tell R otherwise.  So if you cannot find something
-you did make sure to check what directory you were working in!
+you need make sure to check what directory you were working in!
 
 Writing data files
 ------------------
 
-There are write functions for Excel and CSV:
+There are write functions for CSV (which you can open in Excel easily):
 ```{r, eval = FALSE}
-write.xlsx(xesoph, "xesoph.xlsx")
 write.csv(iih, "iih2.csv")
 ```
 
@@ -121,22 +116,24 @@ These will be written into your working directory.  Be careful, if they exist, t
 
 You can also directly save R objects:
 ```{r, eval = FALSE}
-save(xesoph, file = "xesoph.rd")      # one
-save(xesoph, iih, file = "inout.rd")  # more
+saveRDS(xesoph, file = "xesoph.rds")   
+saveRDS(iih, file = "iih.rds")  
 
 rm(xesoph)
 rm(iih)
 
-load("inout.rd")               # now your working area has xesoph and iih again
+xesoph <- readRDS("xesoph.rds")      
+iih <- readRDS("iih.rds")  
 ```
 
 I often use these functions in conjunction with `file.exists` to cache long data operations so that I don't have to wait
 for them to finish everytime I run my code.
 
 ```{r, eval = FALSE}
-if(!file.exists("inout.rd")) {
-  # ... do time consuming task to create xesoph and iih
-  save(xesoph, iih, file = "inout.rd") 
-} 
-load("inout.rd")
+if(!file.exists("iih.rds")) {
+  # ... do time consuming task to create iih
+  saveRDS(iih, file = "iih.rds") 
+} else {
+  iih <- loadRDS("iih.rds")
+}
 ```

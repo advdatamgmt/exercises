@@ -225,7 +225,7 @@ Explore and Extend
 ------------------
 + Sometimes you want to get access to the index of a row or column of a `data.frame` or the index of an element in a vector or list inside
 your `for` loop.  The functions `NCOL`, `NROW`, `length`, and `seq_along` can be a help.  Try each with `esoph` (remember this is a builtin
-dataset in R).  Why is the length of `esoph` 5? 
+dataset in R).  Why is the length of `esoph` only 5? 
 
 + Above we created a `while` loop using both `break` and `next`.  Rewrite the `while` loop using neither `break` nor `next`.
 

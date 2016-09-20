@@ -83,27 +83,21 @@ img {
 <div id="prepare" class="section level2">
 <h2>Prepare</h2>
 <p>This is not a typical module. There is only a brief tutorial on getting datasets in and out of R as well as some file system related commands.</p>
-<p>Before you start, make sure you have the most up-to-date version of the <code>adm</code> package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools) <span class="co"># if you get an error did you install back in the earlier exercise?</span>
-<span class="kw">install_github</span>(<span class="st">&quot;advdatamgmt/adm&quot;</span>)</code></pre></div>
 </div>
 <div id="excel-files" class="section level2">
 <h2>Excel files</h2>
-<p>Next, install the package <code>xlsx</code> which allows you to read Excel files:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">'xlsx'</span>)  <span class="co"># only need to do this once per installed version of R</span></code></pre></div>
+<p>Next, install the package <code>readxl</code> which allows you to read Excel files:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">'readxl'</span>)  <span class="co"># only need to do this once per installed version of R</span></code></pre></div>
 <p>To read an Excel file into R you load the <code>xlsx</code> library once and use the <code>read.xlsx</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(xlsx)  <span class="co"># only once per session</span></code></pre></div>
-<pre><code>## Loading required package: rJava
-## Loading required package: methods
-## Loading required package: xlsxjars</code></pre>
-<p>Because I’ve saved the files we are going to use in the <code>adm</code> package you need to ask R where the package directory is (your answer will be different depending on your operating system and what version of R you are running, etc.)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)  <span class="co"># only once per session</span></code></pre></div>
+<p>Because I’ve saved the files we are going to use in the <code>adm</code> package you need to ask R where the package directory is (your answer will be different depending on your operating system and what version of R you are running, etc.). These steps are unique for accessing a raw data file contained in a package. You will NOT generally do this, but it is a convenient way to distribute the file to you.<br /> Once you discover where the file is however, the rest of the steps are the same.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;/Library/Frameworks/R.framework/Versions/3.2/Resources/library/adm&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/bbbruce/Library/R/3.2/library/adm&quot;</code></pre>
 <p>The Excel file we are going to use is a version of the <code>esoph</code> dataset that is in the <code>extdata</code> directory of the package. If you get a blank <code>character</code>, you have typed something wrong or you <code>adm</code> package is not up-to-date.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;/Library/Frameworks/R.framework/Versions/3.2/Resources/library/adm/extdata/esoph.xlsx&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/bbbruce/Library/R/3.2/library/adm/extdata/esoph.xlsx&quot;</code></pre>
 <p>With our filename in hand, we can now call the <code>read.xlsx</code> function. The <code>1</code> tells it to pull out the first sheet of the file:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.xlsx</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>), <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_excel</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>), <span class="dv">1</span>)</code></pre></div>
 <pre><code>##    agegp     alcgp    tobgp ncases ncontrols
 ## 1  25-34 0-39g/day 0-9g/day      0        40
 ## 2  25-34 0-39g/day    10-19      0        10
@@ -194,9 +188,8 @@ img {
 ## 87   75+      120+ 0-9g/day      2         2
 ## 88   75+      120+    10-19      1         1</code></pre>
 <p>Hopefully, it looks familiar. Of course you can save it for later:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xesoph &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>), <span class="dv">1</span>)</code></pre></div>
-<p>When you plan to do additional manipulation to the <code>data.frame</code>, I recommend you call with <code>stringsAsFactors = FALSE</code> and convert any <code>factor</code> at the end. We will soon learn ways to make this happen nearly automatically.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xesoph &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>), <span class="dv">1</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xesoph &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/esoph.xlsx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;adm&quot;</span>), <span class="dv">1</span>)</code></pre></div>
+<p><code>read_excel</code> automatically reads in the <code>data.frame</code> as though you called <code>data.frame</code> with <code>stringsAsFactors = FALSE</code>. In general this is the best way to import any data due to the problems you have seen when you start with <code>factor</code> and want to do additional data manipulations.<br />We will soon learn ways to convert variables to factors nearly automatically anyway.</p>
 </div>
 <div id="comma-delimited-text-files" class="section level2">
 <h2>Comma Delimited Text Files</h2>
@@ -212,29 +205,30 @@ img {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;/Users/bbbruce/Documents&quot;</span>)  <span class="co"># you need to modify this for your system and preferences</span></code></pre></div>
 <p>Since you may not be familiar with your file system, I recommend using RStudio’s menu. Go to Session -&gt; Set Working Directory -&gt; Choose Directory… so that you can browse to where you want to work. When you are in the working directory, you do not need any of the fancy commands we were using earlier to figure out where the file is.</p>
 <p>For example, if you had a file called “iih.xlsx” in your working directory you would read it in like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.xlsx</span>(<span class="st">&quot;iih.xlsx&quot;</span>, <span class="dv">1</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p>Likewise, if you write anything out, it will be in the working directory unless you tell R otherwise. So if you cannot find something you did make sure to check what directory you were working in!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_excel</span>(<span class="st">&quot;iih.xlsx&quot;</span>, <span class="dv">1</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Likewise, if you write anything out, it will be in the working directory unless you tell R otherwise. So if you cannot find something you need make sure to check what directory you were working in!</p>
 </div>
 <div id="writing-data-files" class="section level2">
 <h2>Writing data files</h2>
-<p>There are write functions for Excel and CSV:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.xlsx</span>(xesoph, <span class="st">&quot;xesoph.xlsx&quot;</span>)
-<span class="kw">write.csv</span>(iih, <span class="st">&quot;iih2.csv&quot;</span>)</code></pre></div>
+<p>There are write functions for CSV (which you can open in Excel easily):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.csv</span>(iih, <span class="st">&quot;iih2.csv&quot;</span>)</code></pre></div>
 <p>These will be written into your working directory. Be careful, if they exist, they will be overwritten.</p>
 <p>You can also directly save R objects:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save</span>(xesoph, <span class="dt">file =</span> <span class="st">&quot;xesoph.rd&quot;</span>)      <span class="co"># one</span>
-<span class="kw">save</span>(xesoph, iih, <span class="dt">file =</span> <span class="st">&quot;inout.rd&quot;</span>)  <span class="co"># more</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(xesoph, <span class="dt">file =</span> <span class="st">&quot;xesoph.rds&quot;</span>)   
+<span class="kw">saveRDS</span>(iih, <span class="dt">file =</span> <span class="st">&quot;iih.rds&quot;</span>)  
 
 <span class="kw">rm</span>(xesoph)
 <span class="kw">rm</span>(iih)
 
-<span class="kw">load</span>(<span class="st">&quot;inout.rd&quot;</span>)               <span class="co"># now your working area has xesoph and iih again</span></code></pre></div>
+xesoph &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;xesoph.rds&quot;</span>)      
+iih &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;iih.rds&quot;</span>)  </code></pre></div>
 <p>I often use these functions in conjunction with <code>file.exists</code> to cache long data operations so that I don’t have to wait for them to finish everytime I run my code.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if(!<span class="kw">file.exists</span>(<span class="st">&quot;inout.rd&quot;</span>)) {
-  <span class="co"># ... do time consuming task to create xesoph and iih</span>
-  <span class="kw">save</span>(xesoph, iih, <span class="dt">file =</span> <span class="st">&quot;inout.rd&quot;</span>) 
-} 
-<span class="kw">load</span>(<span class="st">&quot;inout.rd&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if(!<span class="kw">file.exists</span>(<span class="st">&quot;iih.rds&quot;</span>)) {
+  <span class="co"># ... do time consuming task to create iih</span>
+  <span class="kw">saveRDS</span>(iih, <span class="dt">file =</span> <span class="st">&quot;iih.rds&quot;</span>) 
+} else {
+  iih &lt;-<span class="st"> </span><span class="kw">loadRDS</span>(<span class="st">&quot;iih.rds&quot;</span>)
+}</code></pre></div>
 </div>
 
 
