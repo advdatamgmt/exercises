@@ -20,6 +20,7 @@ params:
 1. [Branching Out / Feeling Loopy](branchloop.html)  
 1. [Getting Data In & Out of R](inout.html)
 1. [Base Graphics](basegraph.html) 
+
 --------------------------
 ### Not yet revised
 1. [Food Prep (Slice, Dice, Concatenate, Merge)](foodprep.html) 
