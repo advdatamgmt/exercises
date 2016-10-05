@@ -334,5 +334,5 @@ Evaluate
 
 Pick a data set of your own choosing (perhaps this 
 is an opportunity to test drive the data you want to use for your
-final project?).  Use of of the text or date functions to do something 
+final project?).  Use one of the text or date functions to do something 
 you feel is useful to your data.  Explain why and demonstrate it in a knitted `.Rmd` file.

@@ -50,7 +50,7 @@ code > span.er { font-weight: bold; }
 </style>
 
 
-<link href="data:text/css,h1%20%7B%0A%20%20color%3A%20navy%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20color%3A%20dimgray%3B%0A%20%20font%2Dstyle%3A%20italic%3B%0A%7D%0A%0Atable%2Eexercise%20%7B%0A%20%20border%3A%20solid%3B%0A%20%20margin%3A%20auto%3B%0A%7D%0A%0Atable%2Eexercise%20td%2C%20table%2Eexercise%20th%20%7B%0A%20%20border%3A%20solid%3B%0A%20%20padding%3A%2010px%3B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+<link href="data:text/css,h1%20%7B%0A%20%20color%3A%20navy%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20color%3A%20dimgray%3B%0A%20%20font%2Dstyle%3A%20italic%3B%0A%7D%0A%0Atable%2Eexercise%20%7B%0A%20%20border%3A%20solid%3B%0A%20%20margin%3A%20auto%3B%0A%7D%0A%0Atable%2Eexercise%20td%2C%20table%2Eexercise%20th%20%7B%0A%20%20border%3A%20solid%3B%0A%20%20padding%3A%2010px%3B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0Apre%2C%20code%20%7B%0A%20%20%20%20background%2Dcolor%3A%20%23f0f0f0%20%21important%3B%0A%7D" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -226,11 +226,11 @@ state</code></pre></div>
 <div id="explore-and-extend" class="section level2">
 <h2>Explore and Extend</h2>
 <ul>
-<li><p>Make a really long <code>vector</code> by typing this: <code>1:100</code>. Now that you know how to extract elements from a <code>vector</code>, explain why R has been printing <code>[1]</code> at the beginning of the output all this time.</p></li>
+<li><p>Make a really long <code>vector</code> by typing this: <code>5:123</code>. Now that you know how to extract elements from a <code>vector</code>, explain why R has been printing <code>[1]</code> at the beginning of the output all this time and why R is now printing other numbers between the square brackets (<code>[ ]</code>).</p></li>
 <li><p>Try and assign something to the <strong>reserved</strong> word <code>TRUE</code>. What is the error? Can you make sense of it?</p></li>
 <li><p>Can you guess what function tells you whether something is a <code>factor</code> or not?</p></li>
 <li><p>Is a <code>factor</code> a <code>vector</code>? Justify your answer.</p></li>
-<li><p>Remember that I said that a vector can only be made from the same atomic type? Try the following (and additional similar examples) and try to understand what is going on. What is R doing? Why does this always work?</p></li>
+<li><p>Remember that I said that a vector can only be made from the same atomic type? Try the following (and additional similar examples) and try to understand what is going on. What is R doing? Why does this always “work”?</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="dv">0</span>, <span class="ot">FALSE</span>, <span class="dv">3</span>)</code></pre></div>
 <pre><code>## [1] 1 0 0 3</code></pre>
@@ -244,11 +244,11 @@ state</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)                  <span class="co"># you only need to do this one time</span>
 devtools::<span class="kw">install_github</span>(<span class="st">&quot;advdatamgmt/adm&quot;</span>)   <span class="co"># this too, but I may update as course goes along</span>
 <span class="kw">library</span>(adm)                                  <span class="co"># this you need every time you use the package 'adm'</span>
-<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())                               <span class="co"># this will make sure your working environment is clean</span>
+<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())                               <span class="co"># this will make clean your working area</span>
                                               <span class="co"># so no naming conflicts arise</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li><p>Is <code>2dogs</code> a valid name in R? Why or why not?</p></li>
-<li><p>What is the sum of the 11th and 82nd element of <code>x</code>?</p></li>
+<li><p>What is the sum of the 11th and 82nd element of <code>x</code> after you’ve completed the steps above?</p></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="dv">11</span>] +<span class="st"> </span>x[<span class="dv">82</span>]</code></pre></div>
 <pre><code>## [1] 101</code></pre>
@@ -268,7 +268,7 @@ y3[<span class="dv">5</span>]</code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>How many letter c’s are in <code>z</code>?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">factor</span>(z))[<span class="dv">3</span>]   <span class="co"># did you know the oupput is a vector? is.vector()?</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">factor</span>(z))[<span class="dv">3</span>]   <span class="co"># did you know the output is a vector? is.vector()?</span></code></pre></div>
 <pre><code>##   c 
 ## 342</code></pre>
 </div>
