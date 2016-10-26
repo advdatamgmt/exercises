@@ -19,19 +19,19 @@ Exercise
 
 ### The `apply` family
 
-R has a group of functions that work in a similar fashion. Each of these
-functions *takes a function as an argument* and applies it to each of the
-elements of one of its other arguments.  These functions can replace most
-`for`-loops in R and they are faster too.  The model function for this
-family of functions that takes a function as an argument and applies it to
-another one of its arguments is: `apply`.  (Programmers are not that
-creative with names - nor should they be!)
+R has a group of functions that all work in a similar fashion. Each of these
+functions *takes a function as an argument* and applies that function
+to each of the elements of one of its other arguments.  
+These functions can replace most `for`-loops in R and they are faster too.  
+The model function for this family of functions that takes a function as 
+an argument and applies it to another one of its arguments is: `apply`.  
+(Programmers are not that creative with names - nor should they be!)
 
 Not only are `apply` family functions generally faster than loops, but
 they are also more "R-like." That is to say, when you think in terms of
 these functions you are thinking more like an R programmer. 
-Just like different human languages have different figures of speech and modes 
-of thinking that characterize them, so do computer languages.
+Just like different human languages have different figures of speech, idioms,
+and modes of thinking that characterize them, so do computer languages.
 
 As we have discussed previously, R lends itself to functional types of 
 programming idioms, one of which is called mapping. Mapping
@@ -41,8 +41,8 @@ is a very "functional" programming idiom.
 
 So, let's get started with the `apply` function.  The `apply` function works
 on the rows or columns of an `data.frame` or `array`.  We have not met 
-an `array` before but they are essentially a `vector` that has multiple 
-dimensions of all the same **atomic** data type.  
+an `array` before but they are essentially a `vector` that has 2 or more 
+dimensions (e.g., a table has two dimensions) of all the same **atomic** data type.  
 We will create one that contains 10,000 coin
 flip experiments using 100 flips in each experiment.  
 The function `rbinom` generates random binomially distributed
@@ -116,7 +116,7 @@ Most advanced programmers would do the latter in this case
 because it is short enough to comprehend easily, but either is absolutely
 acceptable.
 
-Now, let's return not only the variance but the mean.  Maybe here the the
+Now, let's return not only the variance but the mean.  Maybe here the 
 function is complicated enough that it is worth naming separately for clarity:
 
 ```{r}
@@ -151,22 +151,17 @@ sapply(10^(1:3), rmv)
 You will quite frequently run into datasets like the following one listing the ocular photographs of patients,
 each with a variable number of photographs:
 
-```{r, eval = FALSE}
-# yep do it again if you've not recently
-library(devtools); install_github("advdatamgmt/adm") 
-```
-
 ```{r}
 library(adm)
 head(photoqual)
 ```
 
 It may be tempting to run the `summary` function on the dataset, but you cannot do that in this case. You would
-get a weighted average of age by the number of photographs that the patient had taken. Not at all the
-correct thing to report. Plus, the observations are not independent so your inferential statistics would be
+get a weighted average of age by the number of photographs that the patient had taken. Not the
+correct thing to report! Plus, the observations are not independent so your inferential statistics would be
 all messed up.
 
-The `tapply` function to the rescue which allows a function to be applied to a 
+The `tapply` function comes to the rescue because it allows a function to be applied to a 
 **ragged array**, i.e., an unbalanced or an inconsistent number of observations 
 in each set/array. So, what if you wanted to count how many photographs
 each patient had on each eye?  Here's how you would do it:

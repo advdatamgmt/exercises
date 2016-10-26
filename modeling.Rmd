@@ -20,7 +20,7 @@ Exercise
 R comes with functions for ordinary linear regression (`lm`), 
 for generalized linear models (`glm`), and time-to-event models 
 (package `survival` - do not need to install - comes with R).  
-However, a more powerful package these common models is `rms`.
+However, a more powerful package for these common models is `rms`.
 You'll see some messages after your load the package.
 
 ```{r, eval = 2, message=FALSE}

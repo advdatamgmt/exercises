@@ -31,18 +31,17 @@ library(ggplot2)
 
 ### Using ggplot2
 
-The function is called `ggplot` (note no number 2 on the end).  You
-want to store this output in a name because all you are doing below is
-telling ggplot how to "think"" about the data, i.e., what represents x
+The function is called `ggplot` (note no number 2 on the end of the
+function).  You want to store this output in a name because all you are doing 
+below is telling ggplot how to "think"" about the data, i.e., what represents x
 and y in this case.  If you run it directly, you'll get an error "No
 layers in plot" because you've not added a layer to draw.  
 
 You will need to refer frequently to the `ggplot2` documentation
 found at <http://docs.ggplot2.org/current/>.  Note that the
-functions have often have "aesthetics"" listed, in addition to the usual 
-"arguments" that all R functions have, 
-that control the way the data is displayed.  Aesthetics are placed
-within a function
+functions often have "aesthetics" listed, that control the way the data 
+is displayed in addition to the usual "arguments" that all R functions have.  
+Aesthetics are placed within a function
 called `aes` within your function call as an argument.  Watch
 for that pattern below as we work to recreate a version of our optic nerve
 head figure:
