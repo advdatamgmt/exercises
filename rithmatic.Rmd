@@ -1,5 +1,5 @@
 ---
-title: "‘Rithmatic"
+title: "'Rithmatic"
 author: "Beau B. Bruce"
 output: 
   html_document:
@@ -66,7 +66,8 @@ Explore and Extend
 
 + What do you get when you divide by zero?
 
-+ What does the operator `%%` do?  Don't look it up - try to figure it out by experimenting with different inputs.  Here is one example of the type of things you should try:
++ What does the operator `%%` do?  Don't look it up - try to figure it out by experimenting with different inputs.  For now, keep only use integers and keep the left number 
+bigger than the right one.  Here is one example of the type of things you should try:
 ```{r, eval=FALSE}
 12 %% 5
 ```
