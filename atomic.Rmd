@@ -132,10 +132,10 @@ is.character('I'm fine')
 is.character("I'm fine")
 ```
 
-5. (optional: challenging) Remember **presidence** from the [Rithmatic](rithmatic.html#presidence) exercise?  Do you need the parentheses above?  Write out the presidence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
+5. (optional: challenging) Remember **precedence** from the [Rithmatic](rithmatic.html#precedence) exercise?  Do you need the parentheses above?  Write out the precedence for the **arithmetic operators** (`*`, `/`, `+`, `-`), 
 **logical operators** (`!`, `&`, `|`), 
 and **relational operators** (`<`, `>`, `<=`, `>=`, `==`, `!=`) 
-by writing each group with equal **presidence** on a single line and writing **operators** with higher presidence on a higher line.  (Hint: your "table" should have 6 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
+by writing each group with equal **precedence ** on a single line and writing **operators** with higher precedence  on a higher line.  (Hint: your "table" should have 6 lines and all the **relational operators** will be on the same line.)  For example, as you know for the **arthimetic operators**, the "table" would look like this, with two lines:
 ```{r, eval=FALSE}
 # * /
 # + -
@@ -153,24 +153,24 @@ by writing each group with equal **presidence** on a single line and writing **o
 #depending on the order you execute them in (use parentheses to group)
 #then see what R does without the parentheses:
 
-# * has higher presidence than < 
+# * has higher precedence  than < 
 # and as the problem says all the relational operators
-# are equal in presidence
+# are equal in precedence 
 (2 * 3) < (3 * 2)
 2 * (3 < 3) * 2
 2 * 3 < 3 * 2
 
-# ! has lower presidence than <
+# ! has lower precedence  than <
 (!TRUE) < FALSE
 !(TRUE < FALSE)
 !TRUE < FALSE
 
-# ! has higher presidence than &
+# ! has higher precedence  than &
 !TRUE & FALSE
 (!TRUE) & FALSE
 !(TRUE & FALSE)
 
-# & has higher presidence than !
+# & has higher precedence  than !
 FALSE & FALSE | TRUE
 (FALSE & FALSE) | TRUE
 FALSE & (FALSE | TRUE)

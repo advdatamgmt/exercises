@@ -74,9 +74,9 @@ bigger than the right one.  Here is one example of the type of things you should
 
 + Try to think of a situation where the operator `%%` might be useful for some procedure or process?
 
-+ You can use parentheses to group operations when necessary, e.g. `(3 * 4) + (5 * 6)`.  In the absence of parentheses, most computer languages, including R, use a set of rules called **presidence** <a name="presidence"/> to determine which operation to do first.  Although you might think left-to-right would be the rule, this is the rule only when two operators have equal **presidence**.  Instead, certain operators take **presidence** over other operators and those with a higher **presidence** are executed first.  Try some expressions like those below and figure out the presidence of the four main mathematical operators we learned about `+`, `-`, `*`, `/`.  
-    + Which have equal presidence (i.e., are evaluated left-to-right)?  
-    + Which have higher presidence than the others?
++ You can use parentheses to group operations when necessary, e.g. `(3 * 4) + (5 * 6)`.  In the absence of parentheses, most computer languages, including R, use a set of rules called **precedence** <a name="precedence"/> to determine which operation to do first.  Although you might think left-to-right would be the rule, this is the rule only when two operators have equal **precedence**.  Instead, certain operators take **precedence** over other operators and those with a higher **precedence** are executed first.  Try some expressions like those below and figure out the precedence of the four main mathematical operators we learned about `+`, `-`, `*`, `/`.  
+    + Which have equal precedence (i.e., are evaluated left-to-right)?  
+    + Which have higher precedence than the others?
 ```{r, eval=FALSE}
 2 + 3 * 4
 3 / 2 * 5
