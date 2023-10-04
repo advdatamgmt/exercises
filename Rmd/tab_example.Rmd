@@ -145,19 +145,19 @@ all <- paste(header, body, sep = "")
 # an error)
 cat(html("<b>Table 1.</b> Frequency of exposures in cases of low birth \
          weight (&lt;2500 g) vs. non-low birth weight.", "p"), 
-    file = "table1.html")
+    file = "Rmd/table1.html")
 
 # table output
 table <- html(all, "table", list(list(style = "border-collapse:collapse")))
-cat(table, file = "table1.html", append = TRUE)
+cat(table, file = "Rmd/table1.html", append = TRUE)
 
 # footnotes
 footnotes <- c(
   "&dagger; &alpha;=0.05. Significant p-values are marked with an asterisk (*).<br/>", 
   "&Dagger; Fisher's Exact Test<br/>", 
   "&sect; Two-tailed p-value<br/>")
-cat(html(footnotes, "small"), file = "table1.html", append = TRUE)
+cat(html(footnotes, "small"), file = "Rmd/table1.html", append = TRUE)
 
 # file was written above but we'll read it back in and display here
-cat(readLines("table1.html"))
+cat(readLines("Rmd/table1.html"))
 ```
